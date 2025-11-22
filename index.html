@@ -2,1703 +2,1781 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBTI 旗舰版人格测评 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MBTI 旗舰版人格测评 2025 | NeuroMatrix Concept</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js 图表库 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#bc13fe',
+                        'deep-space': '#050b14',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 12s linear infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'width-grow': 'widthGrow 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(200%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        widthGrow: {
+                            '0%': { width: '0%' },
+                            '100%': { width: '100%' }
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         /* === 全局基础样式 === */
-        body {
-            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
-            background-color: #f0f2f5;
-            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
-            background-size: 24px 24px;
-            -webkit-print-color-adjust: exact;
+        html, body {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #050b14;
+            color: #e2e8f0;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            -webkit-overflow-scrolling: touch; 
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* 动态神经背景 Canvas */
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* === 动画效果 === */
-        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
-        .slide-out { animation: slideOut 0.3s forwards; }
-        .slide-in { animation: slideIn 0.4s forwards; }
-        @keyframes slideOut { to { opacity: 0; transform: translateX(-30px); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        .slide-out-left { animation: slideOutLeft 0.4s cubic-bezier(0.5, 0, 0.75, 0) forwards; }
+        .slide-in-right { animation: slideInRight 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes slideOutLeft { to { opacity: 0; transform: translateX(-40px) scale(0.95); filter: blur(4px); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px) scale(0.95); filter: blur(4px); } to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); } }
 
-        /* === 报告内容排版 === */
+        /* === 玻璃拟态容器 === */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+        }
+        
+        /* === 扫描光效按钮 === */
+        .btn-scan { position: relative; overflow: hidden; }
+        .btn-scan::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.2), transparent);
+            transform: translateY(-100%);
+        }
+        .btn-scan:hover::after { animation: scan 1.5s linear infinite; }
+
+        /* === 报告排版 === */
         .report-section h3 {
-            display: flex; align-items: center; color: #111827;
-            font-size: 1.4rem; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1.2rem;
-            border-bottom: 2px solid #e5e7eb; padding-bottom: 0.8rem;
+            display: flex; align-items: center; color: #f1f5f9;
+            font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.3); padding-bottom: 0.5rem;
         }
-        .report-section h3 i { margin-right: 0.8rem; color: #4f46e5; }
-        .report-section p { margin-bottom: 1.2rem; line-height: 1.8; color: #374151; text-align: justify; font-size: 1.05rem; }
+        .report-section h3 i { margin-right: 0.8rem; color: #00f3ff; }
+        .report-section p { margin-bottom: 1rem; line-height: 1.8; color: #94a3b8; font-size: 0.95rem; text-align: justify; }
         
-        .report-section ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
-        .report-section li {
-            background: white; padding: 1.2rem; border-radius: 0.8rem;
-            border-left: 5px solid #4f46e5; list-style: none; font-size: 1rem; color: #4b5563;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: transform 0.2s;
+        .report-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 2px solid #00f3ff;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            transition: transform 0.3s;
         }
-        .report-section li:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .report-section strong { color: #1f2937; display: block; margin-bottom: 0.4rem; font-size: 1.1rem; }
+        .report-card:hover { transform: translateX(5px); background: rgba(30, 41, 59, 0.6); }
 
-        /* === 加载动画 === */
-        .loader-circle { border-top-color: #4f46e5; animation: spinner 1.5s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* === 全息核心动画 === */
+        .holo-ring {
+            position: absolute; border-radius: 50%; border: 1px solid transparent;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+        .hr-1 { inset: 0; border-top: 2px solid #00f3ff; animation: spin 6s linear infinite; }
+        .hr-2 { inset: 15px; border-left: 2px solid #bc13fe; animation: spin 8s linear infinite reverse; }
+        .hr-3 { inset: 30px; border-bottom: 2px solid #ffffff; animation: spin 4s linear infinite; opacity: 0.5; }
         
-        /* 流光文字 */
-        .shimmer-text {
-            background: linear-gradient(45deg, #4f46e5, #ec4899, #4f46e5); background-size: 200% auto;
-            color: transparent; -webkit-background-clip: text; background-clip: text; animation: shimmer 3s linear infinite;
-        }
-        @keyframes shimmer { to { background-position: 200% center; } }
-
-        /* Toast */
-        #toast {
-            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
-            border-radius: 8px; padding: 16px; position: fixed; z-index: 100; left: 50%; bottom: 30px;
-            transform: translateX(-50%); font-size: 17px; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
-        }
-        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
-
-        /* === 打印样式 === */
-        @media print {
-            @page { margin: 0; size: auto; }
-            body { background: white; padding: 0; margin: 0; }
-            #app-container { box-shadow: none; width: 100%; max-width: 100%; border-radius: 0; margin: 0; min-height: auto; ring: 0; }
-            #sidebar, .no-print, button, #loading-screen, #start-screen, #quiz-screen { display: none !important; }
-            #result-screen { position: static !important; display: block !important; overflow: visible !important; }
-            #result-screen > div { max-width: 100%; padding: 40px !important; }
-            .radar-container { width: 400px !important; height: 300px !important; margin: 0 auto; page-break-inside: avoid; }
-            .text-white { color: #000 !important; }
-            .bg-gradient-to-br { background: none !important; border: 1px solid #ddd; color: black !important; }
-            .backdrop-blur-sm { background: none !important; }
-            .report-section h3 { page-break-before: auto; }
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
+        /* === 滚动条 === */
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-2 md:p-6 lg:p-8">
+<body class="flex items-center justify-center md:p-6 lg:p-8 overflow-hidden">
 
-    <div id="toast"><i class="fas fa-check-circle mr-2"></i> 链接已复制到剪贴板</div>
+    <!-- 动态神经背景 -->
+    <canvas id="neural-bg"></canvas>
 
-    <div id="app-container" class="bg-white w-full max-w-6xl rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[800px] relative transition-all duration-500 ring-1 ring-gray-100">
+    <!-- 主应用容器 -->
+    <div id="app-container" class="glass-panel w-full max-w-[1200px] md:rounded-[2rem] flex flex-col md:flex-row relative transition-all duration-700 overflow-hidden h-screen md:h-[800px] border-t border-white/10">
         
-        <!-- 左侧边栏 -->
-        <div class="bg-slate-900 text-white md:w-80 p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-500 z-10" id="sidebar">
-            <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none overflow-hidden">
-                <div class="absolute top-[-10%] left-[-10%] w-40 h-40 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-                <div class="absolute top-[-10%] right-[-10%] w-40 h-40 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-                <div class="absolute bottom-[-10%] left-[20%] w-40 h-40 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-                <i class="fas fa-dna absolute top-10 left-6 text-8xl text-white opacity-10 transform -rotate-12"></i>
-            </div>
-            
+        <!-- 左侧仪表盘 (Dashboard) -->
+        <div class="bg-[#0a1120]/80 md:w-72 p-6 flex flex-col justify-between relative z-20 border-b md:border-b-0 md:border-r border-white/5 shrink-0 backdrop-blur-md">
             <div class="relative z-10">
-                <div class="text-indigo-400 font-bold tracking-[0.3em] text-xs uppercase mb-3">Analysis System</div>
-                <h1 class="text-3xl font-black leading-tight tracking-tight">MBTI<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">旗舰版 2025</span></h1>
-                
-                <div id="current-mode-display" class="mt-4 hidden">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-900/50 text-indigo-200 border border-indigo-700/50">
-                        <i class="fas fa-bolt mr-1.5"></i> <span id="mode-name-text">专业模式</span>
-                    </span>
+                <!-- Logo Area -->
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-8 h-8 rounded bg-gradient-to-br from-neon-blue to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                        <i class="fas fa-brain text-white text-xs"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-neon-blue font-mono tracking-widest">NEUROMATRIX</div>
+                        <div class="text-lg font-bold text-white tracking-tight leading-none">旗舰版 2025</div>
+                    </div>
+                </div>
+
+                <!-- 状态指示器 -->
+                <div class="space-y-4 hidden md:block">
+                    <div class="flex justify-between items-center text-[10px] text-slate-500 font-mono">
+                        <span>系统状态</span>
+                        <span class="text-green-400">在线 <i class="fas fa-circle text-[6px] ml-1 animate-pulse"></i></span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-slate-500 font-mono">
+                        <span>数据库连接</span>
+                        <span class="text-neon-blue">安全</span>
+                    </div>
+                    <div id="mode-indicator" class="opacity-0 transition-opacity duration-500">
+                        <div class="h-px w-full bg-white/10 my-3"></div>
+                        <span class="text-[10px] text-slate-400 font-mono block mb-1">当前模式</span>
+                        <span class="text-xs font-bold text-white bg-white/10 px-2 py-1 rounded border border-white/5 inline-block" id="mode-name-text">--</span>
+                    </div>
                 </div>
             </div>
 
-            <div id="sidebar-stats" class="relative z-10 hidden opacity-70 transition-opacity duration-500 mt-auto mb-auto">
-                <div class="mb-2 flex justify-between items-end">
-                    <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Progress</span>
-                    <span class="text-4xl font-bold font-mono" id="percentage-display">0%</span>
+            <!-- 侧边栏进度 (仅桌面) -->
+            <div id="sidebar-stats" class="opacity-0 transition-opacity duration-500 translate-y-4 md:translate-y-0">
+                <div class="flex justify-between items-end mb-2 font-mono text-[10px] text-slate-400">
+                    <span>分析进度</span>
+                    <span class="text-neon-blue font-bold text-base" id="percentage-display">0%</span>
                 </div>
-                <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden p-[1px]">
-                    <div id="sidebar-progress" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div id="sidebar-progress" class="h-full bg-gradient-to-r from-neon-blue via-indigo-500 to-neon-purple relative shadow-[0_0_10px_rgba(0,243,255,0.5)]" style="width: 0%">
+                        <div class="absolute top-0 right-0 h-full w-2 bg-white blur-[2px]"></div>
+                    </div>
                 </div>
-                <div class="mt-2 text-xs text-right text-slate-500 font-mono" id="progress-detail">0 / 100</div>
-            </div>
-
-            <div class="relative z-10 text-xs text-slate-500 border-t border-slate-800 pt-6 mt-6">
-                &copy; <span id="copyright-year">2025</span> 心理测评实验室<br>
-                Powered by NeuroMatrix Engine™
             </div>
         </div>
 
-        <!-- 右侧主内容区 -->
-        <div class="flex-1 bg-white flex flex-col relative overflow-hidden">
+        <!-- 右侧交互区 -->
+        <div class="flex-1 relative bg-gradient-to-b from-transparent to-[#050b14]/50 flex flex-col">
             
-            <!-- 1. 启动页 (选择模式) -->
-            <div id="start-screen" class="absolute inset-0 p-8 md:p-16 lg:p-20 flex flex-col justify-center items-start fade-in z-30 bg-white">
-                <div class="absolute top-10 right-10 opacity-5">
-                    <i class="fas fa-brain text-9xl"></i>
-                </div>
-                <span class="bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-xs font-extrabold tracking-wide mb-8 uppercase border border-indigo-100">V5.0.3 Stable</span>
-                <h2 class="text-5xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">探索你的<br><span class="shimmer-text">多维人格宇宙</span></h2>
-                <p class="text-slate-500 text-lg mb-12 max-w-xl leading-relaxed">基于荣格心理学理论与 2025 最新大数据模型。通过不同深度的测评，精准解析您的认知功能。</p>
+            <!-- 1. 欢迎界面 -->
+            <div id="start-screen" class="absolute inset-0 flex flex-col justify-center p-8 md:p-16 z-30 fade-in">
+                <!-- 浮动装饰元素 -->
+                <div class="absolute top-10 right-10 w-32 h-32 border border-neon-blue/20 rounded-full animate-spin-slow border-dashed hidden md:block"></div>
+                <div class="absolute bottom-20 left-10 w-3 h-3 bg-neon-purple shadow-[0_0_15px_#bc13fe] rounded-full animate-float"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
-                    <!-- 快速模式 -->
-                    <button onclick="startQuiz('simple')" class="group relative bg-white border-2 border-slate-100 hover:border-indigo-500 p-6 rounded-2xl text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                        <div class="absolute top-4 right-4 text-slate-200 group-hover:text-indigo-500 transition-colors text-2xl"><i class="fas fa-bolt"></i></div>
-                        <div class="text-sm font-bold text-indigo-500 mb-2 uppercase tracking-wider">Quick Mode</div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">快速测评</h3>
-                        <!-- 更新了耗时文案 -->
-                        <p class="text-sm text-slate-400">32 道精选题目<br>约 3-5 分钟</p>
-                    </button>
+                <div class="max-w-2xl relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-neon-blue text-xs font-mono mb-6 backdrop-blur-sm">
+                        <i class="fas fa-bolt"></i> 量子分析引擎 V5.0
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
+                        探索你的<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-neon-blue to-neon-purple animate-gradient">精神内核</span>
+                    </h1>
+                    <p class="text-slate-400 text-lg mb-12 max-w-lg leading-relaxed border-l-2 border-white/10 pl-4">
+                        融合荣格认知功能理论与 2025 神经网络模型。<br>
+                        这不仅是测试，更是对潜意识的精准解码。
+                    </p>
 
-                    <!-- 专业模式 -->
-                    <button onclick="startQuiz('pro')" class="group relative bg-slate-900 border-2 border-slate-900 hover:bg-slate-800 p-6 rounded-2xl text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1 shadow-lg">
-                        <div class="absolute top-[-10px] right-[-10px] bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md animate-bounce">推荐</div>
-                        <div class="absolute top-4 right-4 text-slate-600 group-hover:text-indigo-400 transition-colors text-2xl"><i class="fas fa-microscope"></i></div>
-                        <div class="text-sm font-bold text-indigo-400 mb-2 uppercase tracking-wider">Pro Analysis</div>
-                        <h3 class="text-xl font-bold text-white mb-2">专业测评</h3>
-                        <!-- 更新了耗时文案 -->
-                        <p class="text-sm text-slate-400">100 道深度题目<br>约 10-15 分钟</p>
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="startQuiz('simple')" class="btn-scan group relative overflow-hidden bg-slate-800/50 hover:bg-neon-blue/10 border border-white/10 hover:border-neon-blue/50 px-8 py-5 rounded-xl text-left transition-all duration-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-bold text-white group-hover:text-neon-blue transition-colors">快速扫描</span>
+                                <i class="fas fa-arrow-right text-slate-500 group-hover:text-neon-blue transform group-hover:translate-x-1 transition-all"></i>
+                            </div>
+                            <div class="text-xs text-slate-500 font-mono">32 题 · 预计 3 分钟</div>
+                        </button>
+
+                        <button onclick="startQuiz('pro')" class="btn-scan group relative overflow-hidden bg-indigo-900/20 hover:bg-indigo-600/20 border border-indigo-500/30 hover:border-indigo-400/80 px-8 py-5 rounded-xl text-left transition-all duration-300 shadow-[0_0_20px_rgba(79,70,229,0.1)] hover:shadow-[0_0_30px_rgba(79,70,229,0.3)]">
+                            <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl">PRO</div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-bold text-indigo-300 group-hover:text-white transition-colors">深度全息解析</span>
+                                <i class="fas fa-dna text-indigo-500 group-hover:text-white transform group-hover:rotate-90 transition-all"></i>
+                            </div>
+                            <div class="text-xs text-slate-500 font-mono group-hover:text-slate-300">100 题 · 预计 12 分钟</div>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. 答题页面 -->
-            <div id="quiz-screen" class="absolute inset-0 p-6 md:p-16 flex flex-col hidden z-20 bg-white">
-                <div class="flex-1 flex flex-col justify-center max-w-3xl mx-auto w-full relative" id="question-container">
-                    
-                    <div class="mb-6 flex justify-between items-end border-b border-slate-100 pb-4">
-                        <div>
-                            <span class="text-indigo-600 font-bold text-sm tracking-wider uppercase block mb-1">Question No.</span>
-                            <span id="question-counter-text" class="text-4xl font-black text-slate-800 font-mono">01</span>
-                        </div>
-                        <div class="flex gap-2">
-                             <!-- 答题页重置：需要确认 -->
-                             <button onclick="confirmRestart()" class="text-xs text-slate-400 hover:text-red-500 font-medium bg-slate-50 hover:bg-red-50 px-3 py-2 rounded-full transition-colors flex items-center">
-                                <i class="fas fa-redo-alt mr-1"></i> 重新开始
+            <!-- 2. 答题界面 -->
+            <div id="quiz-screen" class="absolute inset-0 flex flex-col hidden z-20 bg-[#050b14]/80 backdrop-blur-xl">
+                
+                <!-- 顶部进度条 (新增优化) -->
+                <div class="w-full h-1 bg-white/5 relative">
+                    <div id="top-progress-bar" class="h-full bg-gradient-to-r from-neon-blue to-neon-purple shadow-[0_0_10px_#00f3ff] transition-all duration-500 ease-out" style="width: 0%"></div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 md:p-16 pb-32">
+                    <div class="max-w-3xl mx-auto w-full relative min-h-[400px]" id="question-container">
+                        
+                        <!-- 顶部控制条 -->
+                        <div class="flex justify-between items-center mb-10 border-b border-white/5 pb-4">
+                            <div class="flex items-end gap-3">
+                                <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-600 font-mono" id="question-counter-text">01</span>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase mb-0.5">Question Sequence</span>
+                                    <span class="text-xs text-slate-400">请凭借直觉作答</span>
+                                </div>
+                            </div>
+                            <button onclick="goHome()" class="group px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2 text-slate-500 hover:text-red-400 hover:bg-white/5 hover:border-red-400/30 transition-colors">
+                                <span class="text-xs hidden sm:inline">中断测试</span>
+                                <i class="fas fa-power-off text-xs"></i>
                             </button>
-                            <span class="text-xs text-slate-400 font-medium bg-slate-50 px-3 py-2 rounded-full flex items-center">请凭直觉快速作答</span>
                         </div>
-                    </div>
-                    
-                    <h3 id="question-text" class="text-2xl md:text-3xl font-bold text-slate-800 mb-8 leading-snug min-h-[80px] flex items-center">题目加载中...</h3>
+                        
+                        <!-- 问题卡片 -->
+                        <h3 id="question-text" class="text-2xl md:text-3xl font-bold text-slate-200 mb-12 leading-snug">
+                            加载数据流...
+                        </h3>
 
-                    <div class="grid grid-cols-1 gap-5 mb-8">
-                        <button id="btn-option-a" onclick="selectOption('A')" class="group w-full p-6 rounded-2xl border-2 border-slate-100 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 text-left flex items-center relative overflow-hidden shadow-sm hover:shadow-md">
-                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center text-lg font-bold mr-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors z-10 flex-shrink-0 shadow-inner">A</div>
-                            <span id="option-a-text" class="text-lg text-slate-600 font-medium group-hover:text-indigo-900 z-10">选项 A 内容</span>
-                            <div class="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500"><i class="fas fa-check-circle text-2xl"></i></div>
-                        </button>
+                        <!-- 选项 -->
+                        <div class="space-y-5">
+                            <button id="btn-option-a" onclick="selectOption('A')" class="group w-full p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-indigo-600/20 hover:border-indigo-500/50 transition-all duration-300 text-left flex items-center relative overflow-hidden shadow-sm hover:shadow-indigo-500/20">
+                                <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg font-bold mr-6 text-slate-400 group-hover:text-white group-hover:bg-indigo-500 group-hover:border-indigo-400 transition-all font-mono z-10 flex-shrink-0">A</div>
+                                <span id="option-a-text" class="text-lg text-slate-300 group-hover:text-white z-10 transition-colors">选项 A 内容</span>
+                            </button>
 
-                        <button id="btn-option-b" onclick="selectOption('B')" class="group w-full p-6 rounded-2xl border-2 border-slate-100 hover:border-pink-500 hover:bg-pink-50 transition-all duration-200 text-left flex items-center relative overflow-hidden shadow-sm hover:shadow-md">
-                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center text-lg font-bold mr-6 group-hover:bg-pink-500 group-hover:text-white transition-colors z-10 flex-shrink-0 shadow-inner">B</div>
-                            <span id="option-b-text" class="text-lg text-slate-600 font-medium group-hover:text-pink-900 z-10">选项 B 内容</span>
-                            <div class="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity text-pink-500"><i class="fas fa-check-circle text-2xl"></i></div>
-                        </button>
-                    </div>
-
-                    <div class="flex justify-start">
-                        <button id="btn-prev" onclick="prevQuestion()" class="text-slate-400 hover:text-indigo-600 font-bold text-sm flex items-center transition px-4 py-2 rounded-lg hover:bg-slate-50 disabled:opacity-0 cursor-pointer">
-                            <i class="fas fa-arrow-left mr-2"></i> 上一题
+                            <button id="btn-option-b" onclick="selectOption('B')" class="group w-full p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-purple-600/20 hover:border-purple-500/50 transition-all duration-300 text-left flex items-center relative overflow-hidden shadow-sm hover:shadow-purple-500/20">
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg font-bold mr-6 text-slate-400 group-hover:text-white group-hover:bg-purple-500 group-hover:border-purple-400 transition-all font-mono z-10 flex-shrink-0">B</div>
+                                <span id="option-b-text" class="text-lg text-slate-300 group-hover:text-white z-10 transition-colors">选项 B 内容</span>
+                            </button>
+                        </div>
+                        
+                        <!-- 返回按钮 -->
+                        <button id="btn-prev" onclick="prevQuestion()" class="mt-8 text-slate-500 hover:text-white text-sm flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-all opacity-0">
+                            <i class="fas fa-arrow-left"></i> 返回上一题
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. AI 分析 Loading 页 -->
-            <div id="loading-screen" class="absolute inset-0 p-8 flex-col justify-center items-center hidden z-30 bg-white/95 backdrop-blur-md">
-                <div class="loader-circle ease-linear rounded-full border-[6px] border-t-[6px] border-slate-100 h-24 w-24 mb-8 relative z-10 shadow-lg"></div>
-                <h2 class="text-3xl font-black text-slate-800 mb-3">AI 神经网络运算中</h2>
-                <div class="h-1 w-64 bg-slate-100 rounded-full overflow-hidden mb-2">
-                    <div class="h-full bg-indigo-600 animate-[width_2s_ease-in-out_infinite]" style="width: 30%"></div>
+            <!-- 3. 计算中 -->
+            <div id="loading-screen" class="absolute inset-0 flex flex-col justify-center items-center hidden z-40 bg-[#050b14] backdrop-blur-3xl">
+                <div class="relative w-64 h-64 flex items-center justify-center mb-8">
+                    <div class="absolute inset-0 border-t border-neon-blue/30 rounded-full animate-spin"></div>
+                    <div class="absolute inset-4 border-r border-neon-purple/30 rounded-full animate-spin-slow"></div>
+                    <div class="absolute inset-10 border-b border-white/20 rounded-full animate-[spin_3s_linear_infinite]"></div>
+                    <div class="text-4xl font-black text-white tracking-widest animate-pulse" id="loading-percent">0%</div>
                 </div>
-                <p class="text-slate-400 font-mono text-sm" id="loading-text">正在连接 2025 心理学数据库...</p>
+                
+                <div class="h-8 overflow-hidden relative">
+                    <div class="text-neon-blue font-mono text-sm tracking-widest animate-pulse" id="loading-text">正在初始化...</div>
+                </div>
+                
+                <div class="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-neon-blue/5 to-transparent pointer-events-none"></div>
             </div>
 
-            <!-- 4. 结果页面 -->
-            <div id="result-screen" class="absolute inset-0 overflow-y-auto hidden z-20 bg-white fade-in">
-                <div class="p-6 md:p-12 max-w-5xl mx-auto">
+            <!-- 4. 结果展示 -->
+            <div id="result-screen" class="absolute inset-0 overflow-y-auto hidden z-20 fade-in scroll-smooth">
+                <div class="p-6 md:p-12 max-w-6xl mx-auto pb-32">
                     
-                   <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl mb-12 relative overflow-hidden border border-slate-700/50 print:border-black print:bg-white print:text-black">
+                    <!-- 头部身份卡 -->
+                    <div class="glass-panel rounded-3xl p-8 md:p-12 relative overflow-hidden mb-8 group">
+                        <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-neon-blue/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
                         
-                        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                             <img id="result-bg-image" src="" alt="" class="w-full h-full object-cover blur-2xl scale-110 mix-blend-screen transition-opacity duration-1000 ease-in-out" style="opacity: 0;">
-                            <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-transparent"></div>
-                        </div>
+                        <div class="relative z-10 flex flex-col lg:flex-row items-center gap-10">
+                            <!-- 左侧全息核心 -->
+                            <div class="relative w-40 h-40 flex-shrink-0 flex items-center justify-center">
+                                <div class="holo-ring hr-1"></div>
+                                <div class="holo-ring hr-2"></div>
+                                <div class="holo-ring hr-3"></div>
+                                <div class="text-5xl text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-float">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
 
-                        <div class="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-indigo-500 opacity-20 rounded-full blur-[100px] mix-blend-screen z-0"></div>
-                        <div class="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] bg-pink-500 opacity-10 rounded-full blur-[80px] mix-blend-screen z-0"></div>
-                        
-                        <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                            <!-- 中间信息 -->
                             <div class="text-center lg:text-left flex-1">
-                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-200 font-bold text-xs uppercase mb-4 shadow-lg">
-                                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                                    Report Generated Successfully
-                                </div>
-                                <h1 id="result-type" class="text-7xl md:text-8xl font-black text-white mb-2 tracking-tighter drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 print:text-black">INTJ</h1>
-                                <h2 id="result-title" class="text-3xl md:text-4xl text-indigo-200 font-light mb-6 tracking-wide print:text-black">建筑师型人格</h2>
-                                
-                                <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
-                                    <span class="px-4 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-sm text-white shadow-sm print:border-black print:text-black">
-                                        <i class="fas fa-gem mr-2 text-pink-400"></i>稀有度: <span id="rarity-tag" class="font-bold">--</span>
+                                <div class="text-neon-blue font-mono text-xs tracking-[0.3em] mb-2">身份已确认</div>
+                                <h1 id="result-type" class="text-7xl md:text-8xl font-black text-white tracking-tighter leading-none mb-2 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">INTJ</h1>
+                                <h2 id="result-title" class="text-2xl md:text-3xl text-slate-300 font-light tracking-wide mb-6">战略家 / The Architect</h2>
+                                <div class="flex flex-wrap justify-center lg:justify-start gap-3">
+                                    <span class="px-3 py-1.5 rounded bg-white/5 border border-white/10 text-xs text-slate-300 font-mono flex items-center gap-2">
+                                        <i class="fas fa-fingerprint text-neon-purple"></i> 稀有度: <span id="rarity-tag" class="text-white font-bold">--</span>
                                     </span>
-                                    <span class="px-4 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 text-sm text-white shadow-sm print:border-black print:text-black">
-                                        <i class="fas fa-chess mr-2 text-indigo-400"></i>深度策略家
+                                    <span class="px-3 py-1.5 rounded bg-white/5 border border-white/10 text-xs text-slate-300 font-mono flex items-center gap-2">
+                                        <i class="fas fa-brain text-neon-blue"></i> 策略型
                                     </span>
                                 </div>
                             </div>
 
-                            <div class="flex justify-center w-full lg:w-auto">
-                                <div class="radar-container w-full max-w-[360px] aspect-square bg-white/5 rounded-3xl p-4 backdrop-blur-md border border-white/10 shadow-2xl flex items-center justify-center relative group print:shadow-none print:border-none">
-                                    <canvas id="radarChart"></canvas>
+                            <!-- 右侧雷达 -->
+                            <div class="w-full max-w-[240px] aspect-square relative bg-white/5 rounded-full p-4 backdrop-blur-sm border border-white/5">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 核心维度 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <!-- E/I -->
+                        <div class="bg-[#0f172a]/60 border border-white/5 p-5 rounded-xl backdrop-blur-sm">
+                            <div class="flex justify-between text-xs text-slate-400 mb-3 font-mono">
+                                <span>能量流向</span>
+                                <span class="text-white">E vs I</span>
+                            </div>
+                            <div class="relative h-10 flex items-center">
+                                <div class="absolute w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                                    <div id="bar-e" class="h-full bg-neon-blue shadow-[0_0_10px_#00f3ff]" style="width: 50%"></div>
+                                    <div id="bar-i" class="h-full bg-slate-700" style="width: 50%"></div>
+                                </div>
+                                <div class="w-full flex justify-between px-1 relative z-10">
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-e-val">50%</span>
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-i-val">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- S/N -->
+                         <div class="bg-[#0f172a]/60 border border-white/5 p-5 rounded-xl backdrop-blur-sm">
+                            <div class="flex justify-between text-xs text-slate-400 mb-3 font-mono">
+                                <span>信息获取</span>
+                                <span class="text-white">S vs N</span>
+                            </div>
+                            <div class="relative h-10 flex items-center">
+                                <div class="absolute w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                                    <div id="bar-s" class="h-full bg-neon-purple shadow-[0_0_10px_#bc13fe]" style="width: 50%"></div>
+                                    <div id="bar-n" class="h-full bg-slate-700" style="width: 50%"></div>
+                                </div>
+                                <div class="w-full flex justify-between px-1 relative z-10">
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-s-val">50%</span>
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-n-val">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- T/F -->
+                        <div class="bg-[#0f172a]/60 border border-white/5 p-5 rounded-xl backdrop-blur-sm">
+                            <div class="flex justify-between text-xs text-slate-400 mb-3 font-mono">
+                                <span>决策依据</span>
+                                <span class="text-white">T vs F</span>
+                            </div>
+                            <div class="relative h-10 flex items-center">
+                                <div class="absolute w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                                    <div id="bar-t" class="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]" style="width: 50%"></div>
+                                    <div id="bar-f" class="h-full bg-slate-700" style="width: 50%"></div>
+                                </div>
+                                <div class="w-full flex justify-between px-1 relative z-10">
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-t-val">50%</span>
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-f-val">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- J/P -->
+                        <div class="bg-[#0f172a]/60 border border-white/5 p-5 rounded-xl backdrop-blur-sm">
+                            <div class="flex justify-between text-xs text-slate-400 mb-3 font-mono">
+                                <span>执行方式</span>
+                                <span class="text-white">J vs P</span>
+                            </div>
+                            <div class="relative h-10 flex items-center">
+                                <div class="absolute w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                                    <div id="bar-j" class="h-full bg-orange-500 shadow-[0_0_10px_#f97316]" style="width: 50%"></div>
+                                    <div id="bar-p" class="h-full bg-slate-700" style="width: 50%"></div>
+                                </div>
+                                <div class="w-full flex justify-between px-1 relative z-10">
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-j-val">50%</span>
+                                    <span class="text-sm font-bold text-white drop-shadow-md" id="text-p-val">50%</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 数据条 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 print:gap-4">
-                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 print:bg-white print:border-gray-300">
-                            <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-battery-full text-indigo-500 mr-2"></i> 能量获取模式</h4>
-                            <div class="flex items-center gap-4">
-                                <span class="text-sm font-bold text-slate-500 w-8">E</span>
-                                <div class="flex-1 h-3 bg-slate-200 rounded-full overflow-hidden flex">
-                                    <div id="bar-e" class="h-full bg-indigo-500" style="width: 50%"></div>
-                                    <div id="bar-i" class="h-full bg-slate-300" style="width: 50%"></div>
-                                </div>
-                                <span class="text-sm font-bold text-slate-500 w-8 text-right">I</span>
+                    <!-- 新增：职业匹配与情感共鸣 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- 职业匹配 -->
+                        <div class="lg:col-span-2 glass-panel p-6 rounded-2xl">
+                            <h3 class="text-white font-bold mb-4 flex items-center"><i class="fas fa-briefcase text-neon-blue mr-2"></i> 职业信标匹配</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="career-list">
+                                <!-- JS 生成 -->
                             </div>
-                            <div class="flex justify-between text-xs text-slate-400 mt-1 font-mono"><span id="text-e">50%</span><span id="text-i">50%</span></div>
                         </div>
-                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 print:bg-white print:border-gray-300">
-                            <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-eye text-blue-500 mr-2"></i> 信息认知模式</h4>
-                            <div class="flex items-center gap-4">
-                                <span class="text-sm font-bold text-slate-500 w-8">S</span>
-                                <div class="flex-1 h-3 bg-slate-200 rounded-full overflow-hidden flex">
-                                    <div id="bar-s" class="h-full bg-blue-500" style="width: 50%"></div>
-                                    <div id="bar-n" class="h-full bg-slate-300" style="width: 50%"></div>
-                                </div>
-                                <span class="text-sm font-bold text-slate-500 w-8 text-right">N</span>
+                        <!-- 情感共鸣 -->
+                        <div class="glass-panel p-6 rounded-2xl">
+                            <h3 class="text-white font-bold mb-4 flex items-center"><i class="fas fa-heart text-pink-500 mr-2"></i> 情感共鸣</h3>
+                            <div class="space-y-4" id="relationship-content">
+                                <!-- JS 生成 -->
                             </div>
-                            <div class="flex justify-between text-xs text-slate-400 mt-1 font-mono"><span id="text-s">50%</span><span id="text-n">50%</span></div>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 print:bg-white print:border-gray-300">
-                            <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-balance-scale text-teal-500 mr-2"></i> 判断决策模式</h4>
-                            <div class="flex items-center gap-4">
-                                <span class="text-sm font-bold text-slate-500 w-8">T</span>
-                                <div class="flex-1 h-3 bg-slate-200 rounded-full overflow-hidden flex">
-                                    <div id="bar-t" class="h-full bg-teal-500" style="width: 50%"></div>
-                                    <div id="bar-f" class="h-full bg-slate-300" style="width: 50%"></div>
-                                </div>
-                                <span class="text-sm font-bold text-slate-500 w-8 text-right">F</span>
-                            </div>
-                            <div class="flex justify-between text-xs text-slate-400 mt-1 font-mono"><span id="text-t">50%</span><span id="text-f">50%</span></div>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 print:bg-white print:border-gray-300">
-                            <h4 class="font-bold text-slate-700 mb-4 flex items-center"><i class="fas fa-stream text-orange-500 mr-2"></i> 生活执行模式</h4>
-                            <div class="flex items-center gap-4">
-                                <span class="text-sm font-bold text-slate-500 w-8">J</span>
-                                <div class="flex-1 h-3 bg-slate-200 rounded-full overflow-hidden flex">
-                                    <div id="bar-j" class="h-full bg-orange-500" style="width: 50%"></div>
-                                    <div id="bar-p" class="h-full bg-slate-300" style="width: 50%"></div>
-                                </div>
-                                <span class="text-sm font-bold text-slate-500 w-8 text-right">P</span>
-                            </div>
-                            <div class="flex justify-between text-xs text-slate-400 mt-1 font-mono"><span id="text-j">50%</span><span id="text-p">50%</span></div>
                         </div>
                     </div>
 
-                    <div id="result-content" class="report-section"></div>
+                    <!-- 深度分析文本 -->
+                    <div id="result-content" class="report-section glass-panel p-8 rounded-2xl border-l-4 border-l-neon-blue"></div>
                     
-                    <div class="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6 no-print">
-                        <!-- 修复点：结果页使用 goHome() 而不是 confirmRestart() -->
-                        <button onclick="goHome()" class="text-slate-500 hover:text-slate-900 font-bold text-sm flex items-center transition hover:underline">
-                            <i class="fas fa-redo-alt mr-2"></i> 返回首页重新测试
+                    <!-- 底部 Reset -->
+                    <div class="mt-12 text-center">
+                        <button onclick="goHome()" class="group px-8 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white transition-all font-mono text-sm flex items-center justify-center mx-auto gap-3">
+                            <i class="fas fa-power-off group-hover:text-red-400 transition-colors"></i> 重启系统
                         </button>
-                        <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                            <button onclick="downloadReport()" class="flex-1 sm:flex-none px-8 py-4 rounded-xl border-2 border-slate-200 text-slate-700 hover:border-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 transition font-bold shadow-sm flex items-center justify-center group">
-                                <i class="fas fa-file-pdf mr-2 group-hover:scale-110 transition-transform"></i> 下载专业报告 (PDF)
-                            </button>
-                            <button onclick="shareResult()" class="flex-1 sm:flex-none px-8 py-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition font-bold shadow-lg shadow-indigo-200 flex items-center justify-center hover:-translate-y-1 active:translate-y-0">
-                                <i class="fas fa-share-nodes mr-2"></i> 分享测评链接
-                            </button>
-                        </div>
                     </div>
-                    <div class="h-12"></div> 
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('copyright-year').innerText = new Date().getFullYear();
+        /* ==========================================
+           1. 动态神经元网络背景 (Canvas)
+           ========================================== */
+        const canvas = document.getElementById('neural-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = window.innerWidth < 768 ? 40 : 80; // 移动端减少粒子
+        const connectionDistance = 150;
 
-              const questions = [
-            {
-                id: 1,
-                text: "在忙碌的一周结束后，你通常更喜欢：",
-                optionA: { text: "和朋友聚会，去热闹的地方放松", type: "E" },
-                optionB: { text: "一个人安静待着，看书或刷剧", type: "I" }
-            },
-            {
-                id: 2,
-                text: "面对一个全新的任务，你更倾向于：",
-                optionA: { text: "先了解规则和步骤，再慢慢尝试", type: "S" },
-                optionB: { text: "先大概试一试，再边做边摸索整体思路", type: "N" }
-            },
-            {
-                id: 3,
-                text: "当朋友向你倾诉烦恼时，你通常会：",
-                optionA: { text: "先帮他分析问题的逻辑和解决方案", type: "T" },
-                optionB: { text: "先安慰对方的情绪，表达理解和共情", type: "F" }
-            },
-            {
-                id: 4,
-                text: "你更习惯的生活方式是：",
-                optionA: { text: "提前计划好，按清单一步一步完成", type: "J" },
-                optionB: { text: "随心而动，有灵感时再去做就好", type: "P" }
-            },
-            {
-                id: 5,
-                text: "在社交场合中，你通常是：",
-                optionA: { text: "主动找人聊天、结识新朋友的那一类", type: "E" },
-                optionB: { text: "安静观察、只和熟人聊天的那一类", type: "I" }
-            },
-            {
-                id: 6,
-                text: "在学习新知识时，你更喜欢的方式是：",
-                optionA: { text: "通过具体的例子、案例来理解", type: "S" },
-                optionB: { text: "先理解背后的原理与体系，再看例子", type: "N" }
-            },
-            {
-                id: 7,
-                text: "当你和别人意见不一致时，你更可能：",
-                optionA: { text: "坚持自己认为更合理、有道理的一方", type: "T" },
-                optionB: { text: "更在意不要伤害对方的感受", type: "F" }
-            },
-            {
-                id: 8,
-                text: "如果明天有一整天的空闲时间，你会更想：",
-                optionA: { text: "提前安排好要做的事情，列个计划表", type: "J" },
-                optionB: { text: "不做计划，当天想干什么就干什么", type: "P" }
-            },
-            {
-                id: 9,
-                text: "当你参加一个大型活动（如宣讲会、展会）时，你通常：",
-                optionA: { text: "感到兴奋，想多和不同的人交流", type: "E" },
-                optionB: { text: "感觉有点耗能，结束后需要安静恢复", type: "I" }
-            },
-            {
-                id: 10,
-                text: "在回忆一件事情时，你更常想到的是：",
-                optionA: { text: "当时的具体细节、场景和对话", type: "S" },
-                optionB: { text: "这件事背后的意义、启发和趋势", type: "N" }
-            },
-            {
-                id: 11,
-                text: "遇到需要做出重要选择（如学校、专业、工作）时，你更依赖：",
-                optionA: { text: "数据、对比表、理性分析利弊", type: "T" },
-                optionB: { text: "内心的感觉、喜欢程度和价值观", type: "F" }
-            },
-            {
-                id: 12,
-                text: "面对一份长期作业或项目，你通常：",
-                optionA: { text: "会提前规划好时间，分阶段完成", type: "J" },
-                optionB: { text: "经常拖到接近截止日期时才集中爆发", type: "P" }
-            },
-            {
-                id: 13,
-                text: "在一个不熟悉的新环境里，你更可能：",
-                optionA: { text: "主动和别人打招呼，尽快融入环境", type: "E" },
-                optionB: { text: "先观察一阵，慢慢熟悉后再开口", type: "I" }
-            },
-            {
-                id: 14,
-                text: "你更容易被哪类内容吸引：",
-                optionA: { text: "实用技巧、操作步骤、具体经验", type: "S" },
-                optionB: { text: "理念、趋势、未来想象、宏观视角", type: "N" }
-            },
-            {
-                id: 15,
-                text: "当别人评价你时，哪一种更常被提到：",
-                optionA: { text: "理性、冷静、有分析能力", type: "T" },
-                optionB: { text: "温暖、体贴、很会照顾别人感受", type: "F" }
-            },
-            {
-                id: 16,
-                text: "在处理日常琐事（如打扫、整理、记账）时，你：",
-                optionA: { text: "习惯有固定的流程或习惯去维持秩序", type: "J" },
-                optionB: { text: "更随缘，乱一点也没关系，只要自己找得到", type: "P" }
-            },
-            {
-                id: 17,
-                text: "对于“社交”这件事，你总体的感觉更接近：",
-                optionA: { text: "大多时候是有趣和充电的", type: "E" },
-                optionB: { text: "大多时候是消耗和需要恢复的", type: "I" }
-            },
-            {
-                id: 18,
-                text: "在学习或工作中，你更享受：",
-                optionA: { text: "一步步完成清晰、具体的任务", type: "S" },
-                optionB: { text: "思考整体方向、策略和可能性", type: "N" }
-            },
-            {
-                id: 19,
-                text: "当你给别人建议时，你更偏向于：",
-                optionA: { text: "直接指出问题并提出解决方案", type: "T" },
-                optionB: { text: "先理解对方的情绪，再温和地给建议", type: "F" }
-            },
-            {
-                id: 20,
-                text: "对于“变化”的态度，你更接近：",
-                optionA: { text: "希望环境可预期、可控，少一点突然变动", type: "J" },
-                optionB: { text: "喜欢灵活多变，过于固定会觉得无聊", type: "P" }
-            },
-            {
-                id: 21,
-                text: "如果要参加一个线下活动，你更可能选择：",
-                optionA: { text: "有很多互动、游戏、交流环节的活动", type: "E" },
-                optionB: { text: "内容为主、互动较少的讲座或分享会", type: "I" }
-            },
-            {
-                id: 22,
-                text: "看一部电影后，你更常讨论的是：",
-                optionA: { text: "具体剧情、画面细节、演员的表现", type: "S" },
-                optionB: { text: "电影想表达的主题、隐喻和价值观", type: "N" }
-            },
-            {
-                id: 23,
-                text: "在团队合作中，你更希望自己扮演的角色是：",
-                optionA: { text: "负责分析问题、做决策、制定标准的人", type: "T" },
-                optionB: { text: "负责协调关系、鼓励大家、营造氛围的人", type: "F" }
-            },
-            {
-                id: 24,
-                text: "当一个计划被临时打乱时，你通常会：",
-                optionA: { text: "有些烦躁，希望一切按原计划进行", type: "J" },
-                optionB: { text: "觉得也还好，顺势调整再想新办法", type: "P" }
-            },
-            {
-                id: 25,
-                text: "在网上社交（如群聊、评论区）时，你更可能：",
-                optionA: { text: "很活跃，乐于表达、发言、参与讨论", type: "E" },
-                optionB: { text: "更多是潜水，偶尔才会说几句", type: "I" }
-            },
-            {
-                id: 26,
-                text: "当你接触一门新课程时，你更希望老师：",
-                optionA: { text: "多讲解应用场景和实际操作方法", type: "S" },
-                optionB: { text: "先讲核心概念、模型和整体框架", type: "N" }
-            },
-            {
-                id: 27,
-                text: "别人和你争论时，你更难接受的是：",
-                optionA: { text: "对方逻辑混乱、说不通却坚持己见", type: "T" },
-                optionB: { text: "对方说话太冲或不顾及你的感受", type: "F" }
-            },
-            {
-                id: 28,
-                text: "在安排自己的一天时，你更喜欢：",
-                optionA: { text: "有比较固定的作息和时间表", type: "J" },
-                optionB: { text: "时间可以自由流动，想到什么做什么", type: "P" }
-            },
-            {
-                id: 29,
-                text: "如果一个聚会你不太想去，但朋友强烈邀请，你更可能：",
-                optionA: { text: "还是会去，觉得多见见人也不错", type: "E" },
-                optionB: { text: "礼貌拒绝，保留自己的独处时间", type: "I" }
-            },
-            {
-                id: 30,
-                text: "在观察一个问题时，你更习惯：",
-                optionA: { text: "先确认事实、数据和现状", type: "S" },
-                optionB: { text: "先思考背后的模式、趋势和可能性", type: "N" }
-            },
-            {
-                id: 31,
-                text: "如果你必须在两种评价中选一个，你更希望别人说你：",
-                optionA: { text: "很有判断力、很理性、很会分析", type: "T" },
-                optionB: { text: "很善良、有共情力、很好相处", type: "F" }
-            },
-            {
-                id: 32,
-                text: "当你面对多个选择时，你更喜欢：",
-                optionA: { text: "尽快做出决定，避免拖延太久", type: "J" },
-                optionB: { text: "先多保留几种可能性，再慢慢感受", type: "P" }
-            },
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-            /* ===== 从这里开始是专业版额外题目：33 - 100 ===== */
-
-            {
-                id: 33,
-                text: "当你在聚会结束后，内心更真实的感受是：",
-                optionA: { text: "整个人被点燃，很久没这么兴奋了", type: "E" },
-                optionB: { text: "有点被耗干，需要安静一个人待着", type: "I" }
-            },
-            {
-                id: 34,
-                text: "阅读一本书时，你更享受：",
-                optionA: { text: "具体故事情节、细节描写和人物对话", type: "S" },
-                optionB: { text: "作者想表达的思想、隐喻和价值观", type: "N" }
-            },
-            {
-                id: 35,
-                text: "当你看到别人“犯错”时，你更在意：",
-                optionA: { text: "这件事本身是否正确、合理", type: "T" },
-                optionB: { text: "对方当下会不会很难受或尴尬", type: "F" }
-            },
-            {
-                id: 36,
-                text: "你对“临时改变计划”这件事整体感觉是：",
-                optionA: { text: "不太喜欢，会打乱节奏和安排", type: "J" },
-                optionB: { text: "可以接受，有时变化反而更有趣", type: "P" }
-            },
-            {
-                id: 37,
-                text: "在一个新班级或新团队中，你通常：",
-                optionA: { text: "很快就能认识一圈人，和大家聊起来", type: "E" },
-                optionB: { text: "只和少数人慢慢熟起来", type: "I" }
-            },
-            {
-                id: 38,
-                text: "你更容易信任的是：",
-                optionA: { text: "亲眼看到、亲身经历过的事实", type: "S" },
-                optionB: { text: "逻辑推导出的结论和直觉上的判断", type: "N" }
-            },
-            {
-                id: 39,
-                text: "在解决问题时，你更倾向于：",
-                optionA: { text: "先弄清楚“对”与“错”的标准", type: "T" },
-                optionB: { text: "先考虑“对人”是否合适、是否友善", type: "F" }
-            },
-            {
-                id: 40,
-                text: "你整理房间或文件时，更倾向：",
-                optionA: { text: "分门别类、整齐摆放，看起来很有秩序", type: "J" },
-                optionB: { text: "只要自己知道东西在哪，就可以", type: "P" }
-            },
-            {
-                id: 41,
-                text: "你在群聊里更常扮演的角色是：",
-                optionA: { text: "活跃气氛，经常发言的人", type: "E" },
-                optionB: { text: "潜水多，看得多说得少的人", type: "I" }
-            },
-            {
-                id: 42,
-                text: "你更容易记住的是：",
-                optionA: { text: "生活中的小细节，比如谁穿了什么衣服", type: "S" },
-                optionB: { text: "别人表达过的想法、观点或态度", type: "N" }
-            },
-            {
-                id: 43,
-                text: "别人遇到难题问你时，你更习惯给出：",
-                optionA: { text: "清晰直接的解决方案", type: "T" },
-                optionB: { text: "情绪上的支持和鼓励", type: "F" }
-            },
-            {
-                id: 44,
-                text: "你做事的习惯更接近：",
-                optionA: { text: "先完成任务，再考虑放松和娱乐", type: "J" },
-                optionB: { text: "先让自己有状态，再慢慢推进任务", type: "P" }
-            },
-            {
-                id: 45,
-                text: "参加线下活动时，你的能量状态更接近：",
-                optionA: { text: "越聊越兴奋，不知不觉就到很晚", type: "E" },
-                optionB: { text: "聊一会儿就会有点疲惫，想早点回家", type: "I" }
-            },
-            {
-                id: 46,
-                text: "对于“学习/工作内容”的偏好，你更喜欢：",
-                optionA: { text: "具体、实在，看得见成果的事情", type: "S" },
-                optionB: { text: "抽象、概念性，需要思考的事情", type: "N" }
-            },
-            {
-                id: 47,
-                text: "当别人说“你太理性/太感性了”时，你更可能被说的是：",
-                optionA: { text: "太理性了", type: "T" },
-                optionB: { text: "太感性了", type: "F" }
-            },
-            {
-                id: 48,
-                text: "在面对一份长期计划时，你更常：",
-                optionA: { text: "一步步按进度推进", type: "J" },
-                optionB: { text: "经常中途灵感一来就改计划", type: "P" }
-            },
-            {
-                id: 49,
-                text: "如果一个周末两天都排满社交活动，你会：",
-                optionA: { text: "感觉很充实，很喜欢这种节奏", type: "E" },
-                optionB: { text: "觉得有点窒息，需要留一天给自己", type: "I" }
-            },
-            {
-                id: 50,
-                text: "在看说明书或教程时，你更喜欢：",
-                optionA: { text: "有图、有步骤、一目了然", type: "S" },
-                optionB: { text: "先看整体思路，细节自己摸索", type: "N" }
-            },
-            {
-                id: 51,
-                text: "当你做决定时，哪种情况更容易发生在你身上：",
-                optionA: { text: "事后觉得决定在逻辑上没问题就安心", type: "T" },
-                optionB: { text: "事后觉得自己是否对别人不够体贴会纠结", type: "F" }
-            },
-            {
-                id: 52,
-                text: "你对待“截止日期”的方式更接近：",
-                optionA: { text: "会提前完成，给自己留缓冲", type: "J" },
-                optionB: { text: "常常到最后几天才开始全力冲刺", type: "P" }
-            },
-            {
-                id: 53,
-                text: "参加一个需要自我介绍的场合，你：",
-                optionA: { text: "不太紧张，甚至有点期待", type: "E" },
-                optionB: { text: "会有点紧张，希望快点结束", type: "I" }
-            },
-            {
-                id: 54,
-                text: "你更相信哪种类型的信息：",
-                optionA: { text: "亲眼所见、可以验证的事实", type: "S" },
-                optionB: { text: "趋势、预测和综合判断出的可能性", type: "N" }
-            },
-            {
-                id: 55,
-                text: "在评价一件事情是否“做得好”时，你更看重：",
-                optionA: { text: "是否达到了目标、结果是否合理", type: "T" },
-                optionB: { text: "过程中是否尊重了每个人的感受", type: "F" }
-            },
-            {
-                id: 56,
-                text: "在收拾行李或准备出门时，你的习惯是：",
-                optionA: { text: "提前检查清单，确保万无一失", type: "J" },
-                optionB: { text: "差不多就好，缺了再想办法", type: "P" }
-            },
-            {
-                id: 57,
-                text: "你对“结识新朋友”这件事基本态度是：",
-                optionA: { text: "挺期待，认识新的人很有趣", type: "E" },
-                optionB: { text: "有点累，更喜欢少而稳定的关系", type: "I" }
-            },
-            {
-                id: 58,
-                text: "你更习惯用哪种方式描述一件事：",
-                optionA: { text: "讲清楚时间、地点、人物和细节", type: "S" },
-                optionB: { text: "概括重点，突出意义和结论", type: "N" }
-            },
-            {
-                id: 59,
-                text: "当你和别人产生分歧时，你更希望：",
-                optionA: { text: "把事情讲清楚，谁对谁错搞明白", type: "T" },
-                optionB: { text: "氛围不要太僵，关系不要受伤害", type: "F" }
-            },
-            {
-                id: 60,
-                text: "你对“突然的灵感”与“既定的计划”的态度更像：",
-                optionA: { text: "计划优先，灵感要看是否合适再调整", type: "J" },
-                optionB: { text: "灵感优先，觉得有感觉更重要", type: "P" }
-            },
-            {
-                id: 61,
-                text: "你更喜欢的聚会形式是：",
-                optionA: { text: "人多一点，热闹一点更好玩", type: "E" },
-                optionB: { text: "人少一点，能深度聊天更舒服", type: "I" }
-            },
-            {
-                id: 62,
-                text: "你在生活中更在意：",
-                optionA: { text: "现实的条件和目前能做什么", type: "S" },
-                optionB: { text: "未来的发展空间和潜在可能性", type: "N" }
-            },
-            {
-                id: 63,
-                text: "别人向你征求意见时，你更常给出：",
-                optionA: { text: "冷静、直接、有逻辑的反馈", type: "T" },
-                optionB: { text: "温和、鼓励、注重感受的反馈", type: "F" }
-            },
-            {
-                id: 64,
-                text: "你整理日程或备忘录时，更倾向：",
-                optionA: { text: "清晰的待办列表和时间安排", type: "J" },
-                optionB: { text: "只记大概的方向和优先级", type: "P" }
-            },
-            {
-                id: 65,
-                text: "如果你连续几天都没有和人聊天，你会：",
-                optionA: { text: "开始有点憋屈，想找人说说话", type: "E" },
-                optionB: { text: "觉得还挺自在的，不会太难受", type: "I" }
-            },
-            {
-                id: 66,
-                text: "你更容易被哪类课程吸引：",
-                optionA: { text: "动手实验、多实践的课程", type: "S" },
-                optionB: { text: "偏理论、概念、推理的课程", type: "N" }
-            },
-            {
-                id: 67,
-                text: "当别人说话很“不客观”时，你更在意：",
-                optionA: { text: "他讲的内容是否合逻辑", type: "T" },
-                optionB: { text: "他说话的语气会不会伤人", type: "F" }
-            },
-            {
-                id: 68,
-                text: "你对“提前准备”和“即兴发挥”的态度更接近：",
-                optionA: { text: "更安心于充分准备再行动", type: "J" },
-                optionB: { text: "觉得即兴发挥更灵活也更有趣", type: "P" }
-            },
-            {
-                id: 69,
-                text: "当你在一个群体中时，你更自然地会：",
-                optionA: { text: "主动参与话题甚至带动气氛", type: "E" },
-                optionB: { text: "更多地听别人说，只在必要时发言", type: "I" }
-            },
-            {
-                id: 70,
-                text: "你做决定时更依赖哪种信息：",
-                optionA: { text: "已有的数据、经验和现实状况", type: "S" },
-                optionB: { text: "对未来的预测和整体趋势判断", type: "N" }
-            },
-            {
-                id: 71,
-                text: "当你说“这不对”时，通常是因为：",
-                optionA: { text: "逻辑或事实层面有问题", type: "T" },
-                optionB: { text: "价值观或对人不太合适", type: "F" }
-            },
-            {
-                id: 72,
-                text: "你对“生活里的一成不变”与“经常变化”的态度是：",
-                optionA: { text: "喜欢稳定，有安全感", type: "J" },
-                optionB: { text: "太稳定会觉得无聊，喜欢偶尔有变化", type: "P" }
-            },
-            {
-                id: 73,
-                text: "当你一个人待太久时，你会：",
-                optionA: { text: "开始渴望找人聊聊天、出去走走", type: "E" },
-                optionB: { text: "并不会太难受，甚至觉得挺舒服", type: "I" }
-            },
-            {
-                id: 74,
-                text: "你更容易记住哪类信息：",
-                optionA: { text: "具体的数字、时间、地点等细节", type: "S" },
-                optionB: { text: "事物之间的联系和规律", type: "N" }
-            },
-            {
-                id: 75,
-                text: "当你必须做出“艰难选择”时，你更可能：",
-                optionA: { text: "优先选择更合理、更有效的方案", type: "T" },
-                optionB: { text: "优先考虑谁会因此受到怎样的影响", type: "F" }
-            },
-            {
-                id: 76,
-                text: "对于“突然的邀请”（比如马上出门玩），你：",
-                optionA: { text: "会先想想自己今天的安排，权衡一下", type: "J" },
-                optionB: { text: "如果没别的事，可能就答应了", type: "P" }
-            },
-            {
-                id: 77,
-                text: "在一群不熟的人中，你更可能：",
-                optionA: { text: "主动找感兴趣的人搭话", type: "E" },
-                optionB: { text: "安静待着，等别人来找你", type: "I" }
-            },
-            {
-                id: 78,
-                text: "你更喜欢的聊天内容是：",
-                optionA: { text: "现实中的事情、见闻、八卦、生活细节", type: "S" },
-                optionB: { text: "想法、价值观、未来、理想、世界观", type: "N" }
-            },
-            {
-                id: 79,
-                text: "当你评价一件事情是否“有意义”时，你更看重：",
-                optionA: { text: "它在客观上是否有效、产生了什么结果", type: "T" },
-                optionB: { text: "它是否让人变得更开心、更温暖", type: "F" }
-            },
-            {
-                id: 80,
-                text: "你对“制定长期计划”这件事的整体感觉是：",
-                optionA: { text: "很必要，可以给自己清晰方向", type: "J" },
-                optionB: { text: "有点束缚，留点空间会更自在", type: "P" }
-            },
-            {
-                id: 81,
-                text: "当你进入一个新的群聊或社群，你更可能：",
-                optionA: { text: "很快就开始发言、互动", type: "E" },
-                optionB: { text: "先观察大家一段时间再决定要不要说话", type: "I" }
-            },
-            {
-                id: 82,
-                text: "你更享受哪种类型的任务：",
-                optionA: { text: "有清晰流程，可以按部就班完成的", type: "S" },
-                optionB: { text: "需要构思、想点子、搭框架的", type: "N" }
-            },
-            {
-                id: 83,
-                text: "在讨论问题时，你更常：",
-                optionA: { text: "从“对不对、合理不合理”的角度切入", type: "T" },
-                optionB: { text: "从“会不会伤人、是否体面”的角度切入", type: "F" }
-            },
-            {
-                id: 84,
-                text: "你对“固定规则”和“灵活变通”的态度是：",
-                optionA: { text: "规则先行，必要时再考虑变通", type: "J" },
-                optionB: { text: "看情况而定，结果比规则更重要", type: "P" }
-            },
-            {
-                id: 85,
-                text: "连续几天高强度和很多人打交道后，你会：",
-                optionA: { text: "依然可以续上，觉得还行", type: "E" },
-                optionB: { text: "明显感到疲惫，想远离社交一阵子", type: "I" }
-            },
-            {
-                id: 86,
-                text: "你对“细节”与“整体”的关注度更偏向：",
-                optionA: { text: "细节优先，整体可以慢慢拼起来", type: "S" },
-                optionB: { text: "整体优先，细节可以后面再补", type: "N" }
-            },
-            {
-                id: 87,
-                text: "别人问你意见时，你更希望自己被视作：",
-                optionA: { text: "理性可靠、判断清晰的人", type: "T" },
-                optionB: { text: "温暖体贴、懂人心的人", type: "F" }
-            },
-            {
-                id: 88,
-                text: "当计划出现偏差时，你更常：",
-                optionA: { text: "试图修正、拉回原计划", type: "J" },
-                optionB: { text: "顺势调整，干脆换种做法", type: "P" }
-            },
-            {
-                id: 89,
-                text: "你更喜欢哪种类型的线下活动：",
-                optionA: { text: "联谊、派对、游戏局等需要互动很多的", type: "E" },
-                optionB: { text: "讲座、展览、观影等不需要频繁互动的", type: "I" }
-            },
-            {
-                id: 90,
-                text: "你更重视哪种信息来源：",
-                optionA: { text: "自己亲眼看到的和他人的具体经验", type: "S" },
-                optionB: { text: "多方综合后的整体趋势与判断", type: "N" }
-            },
-            {
-                id: 91,
-                text: "当你说“这个方案不好”时，多半是因为：",
-                optionA: { text: "效率低、不合理或不现实", type: "T" },
-                optionB: { text: "会给某些人带来明显的负面感受", type: "F" }
-            },
-            {
-                id: 92,
-                text: "你对“时间表”和“自由安排”的态度是：",
-                optionA: { text: "时间表能帮我更好地掌控生活", type: "J" },
-                optionB: { text: "太多时间表会让我觉得被束缚", type: "P" }
-            },
-            {
-                id: 93,
-                text: "当你和朋友出去玩时，你更像：",
-                optionA: { text: "带头组织、提议去哪玩、干什么的人", type: "E" },
-                optionB: { text: "别人提议后，看看想不想参加的人", type: "I" }
-            },
-            {
-                id: 94,
-                text: "你在考虑一个机会时，更常问自己：",
-                optionA: { text: "现在的条件是否现实、可行", type: "S" },
-                optionB: { text: "未来可能带来怎样的发展和改变", type: "N" }
-            },
-            {
-                id: 95,
-                text: "当你说“没关系”的时候，多半是真正没有关系的是：",
-                optionA: { text: "事情本身对结果影响不大", type: "T" },
-                optionB: { text: "对方是我在意的人，不想让他内疚", type: "F" }
-            },
-            {
-                id: 96,
-                text: "你处理任务的节奏更接近：",
-                optionA: { text: "稳步推进，尽量避免最后一刻赶工", type: "J" },
-                optionB: { text: "容易前期拖延，后期集中爆发", type: "P" }
-            },
-            {
-                id: 97,
-                text: "如果被要求一整天都和人一起活动，你：",
-                optionA: { text: "基本可以适应，甚至觉得挺好玩", type: "E" },
-                optionB: { text: "会感到压力，期望能有一点独处时间", type: "I" }
-            },
-            {
-                id: 98,
-                text: "你在观察某件事时，更自然的是：",
-                optionA: { text: "注意到现实中的细枝末节", type: "S" },
-                optionB: { text: "注意到隐藏的模式和潜在含义", type: "N" }
-            },
-            {
-                id: 99,
-                text: "在内心深处，你更信任：",
-                optionA: { text: "严谨的逻辑推理", type: "T" },
-                optionB: { text: "真诚的情感与直觉", type: "F" }
-            },
-            {
-                id: 100,
-                text: "你对“人生应该被规划多少”的看法是：",
-                optionA: { text: "需要比较清晰的规划，才能踏实", type: "J" },
-                optionB: { text: "留白越多越好，路在走的过程中再想", type: "P" }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, ' : 'rgba(188, 19, 254, '; 
             }
-        ];
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + '0.5)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - distance/connectionDistance * 0.1})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
 
 
-        /**
-         * 图片配置: 请将 "" 替换为图片链接
-         */
-               /**
-         * 图片配置: 请将 "" 替换为图片链接
-         */
+       // ✅修改后代码片段（已补全 100 题，且选项文案里不再出现 E/S/N/T/F/J/P 字母）
+const questions = [
+    // ========= 1-25：外向(E) / 内向(I) =========
+    {
+        id: 1,
+        text: "周末需要恢复能量时，你通常会：",
+        optionA: { text: "约上朋友或参加活动，待在人群中", type: "E" },
+        optionB: { text: "一个人待着，看书、刷剧或安静放松", type: "I" }
+    },
+    {
+        id: 2,
+        text: "在一个陌生的聚会中，你更可能：",
+        optionA: { text: "主动找人聊天，快速融入氛围", type: "E" },
+        optionB: { text: "先观察环境，慢慢适应再开口", type: "I" }
+    },
+    {
+        id: 3,
+        text: "结识新朋友时，你通常：",
+        optionA: { text: "很自然地自我介绍并展开话题", type: "E" },
+        optionB: { text: "等对方先开口，再决定要不要聊", type: "I" }
+    },
+    {
+        id: 4,
+        text: "长时间独处后，你的感受更接近：",
+        optionA: { text: "有些闷，想找人聊聊天", type: "E" },
+        optionB: { text: "感觉充电完毕，更有安全感", type: "I" }
+    },
+    {
+        id: 5,
+        text: "在课堂或会议上，你更倾向于：",
+        optionA: { text: "主动发言、提问、表达观点", type: "E" },
+        optionB: { text: "在心里想一想，很少主动举手", type: "I" }
+    },
+    {
+        id: 6,
+        text: "你更享受哪一种工作环境：",
+        optionA: { text: "开放式办公室，大家随时交流", type: "E" },
+        optionB: { text: "相对独立安静的空间，少干扰", type: "I" }
+    },
+    {
+        id: 7,
+        text: "当你到一个新城市旅行时，你更喜欢：",
+        optionA: { text: "参加当地团体活动或结识当地人", type: "E" },
+        optionB: { text: "自己安排行程，慢慢体验环境", type: "I" }
+    },
+    {
+        id: 8,
+        text: "你做决定时，更看重：",
+        optionA: { text: "先跟身边的人讨论一圈再决定", type: "E" },
+        optionB: { text: "自己在心里反复权衡后再说", type: "I" }
+    },
+    {
+        id: 9,
+        text: "如果一整天都在和别人互动，你会觉得：",
+        optionA: { text: "挺满足的，虽然有点累但开心", type: "E" },
+        optionB: { text: "很消耗，需要独处来恢复", type: "I" }
+    },
+    {
+        id: 10,
+        text: "在群聊或线上社群中，你更像：",
+        optionA: { text: "经常发言、抛话题的人", type: "E" },
+        optionB: { text: "偶尔冒泡，多数时候默默看", type: "I" }
+    },
+    {
+        id: 11,
+        text: "当你遇到有趣的事情，你第一反应是：",
+        optionA: { text: "立刻想分享给朋友或发到社交平台", type: "E" },
+        optionB: { text: "自己在心里回味，分享不分享无所谓", type: "I" }
+    },
+    {
+        id: 12,
+        text: "和陌生人同坐一桌吃饭时，你通常：",
+        optionA: { text: "主动找共同话题聊起来", type: "E" },
+        optionB: { text: "礼貌点头，除非对方先聊", type: "I" }
+    },
+    {
+        id: 13,
+        text: "对你来说，更容易的是：",
+        optionA: { text: "临场聊天，想到什么说什么", type: "E" },
+        optionB: { text: "写下来或事先在脑中组织好", type: "I" }
+    },
+    {
+        id: 14,
+        text: "当你进入一个新团队时，你更常：",
+        optionA: { text: "快速认识大家，主动自我介绍", type: "E" },
+        optionB: { text: "先观察团队氛围，再慢慢熟悉", type: "I" }
+    },
+    {
+        id: 15,
+        text: "和朋友相处，你更偏向：",
+        optionA: { text: "朋友很多，圈子较大", type: "E" },
+        optionB: { text: "朋友不多，但关系比较深", type: "I" }
+    },
+    {
+        id: 16,
+        text: "如果必须在两种工作中选一项，你会选：",
+        optionA: { text: "需要频繁沟通、见很多人的岗位", type: "E" },
+        optionB: { text: "更多独立完成、沟通较少的岗位", type: "I" }
+    },
+    {
+        id: 17,
+        text: "在公开场合表达自己时，你通常：",
+        optionA: { text: "紧张但还是能比较自然地说出来", type: "E" },
+        optionB: { text: "非常谨慎，能不说就尽量不说", type: "I" }
+    },
+    {
+        id: 18,
+        text: "你更容易被哪种描述形容：",
+        optionA: { text: "外向开朗，比较容易亲近", type: "E" },
+        optionB: { text: "安静克制，需要时间才能熟", type: "I" }
+    },
+    {
+        id: 19,
+        text: "参加团队讨论时，你更习惯：",
+        optionA: { text: "边听边说，不断补充想法", type: "E" },
+        optionB: { text: "先听完大家观点，再总结发言", type: "I" }
+    },
+    {
+        id: 20,
+        text: "当你遇到烦心事时，你更常：",
+        optionA: { text: "找人倾诉，边说边理清思路", type: "E" },
+        optionB: { text: "自己想很久，偶尔才会开口说", type: "I" }
+    },
+    {
+        id: 21,
+        text: "和一群人聚会后，你更常有的想法是：",
+        optionA: { text: "下次还想再一起玩", type: "E" },
+        optionB: { text: "需要缓一缓，近期先不要约", type: "I" }
+    },
+    {
+        id: 22,
+        text: "别人对你的第一印象多半是：",
+        optionA: { text: "健谈、好相处、存在感强", type: "E" },
+        optionB: { text: "安静、有点神秘、不太好读懂", type: "I" }
+    },
+    {
+        id: 23,
+        text: "在新的学习或工作环境中，你更像：",
+        optionA: { text: "迅速认识一圈人，建立关系网", type: "E" },
+        optionB: { text: "只和少数频繁接触的人熟起来", type: "I" }
+    },
+    {
+        id: 24,
+        text: "你更容易感到哪种无聊：",
+        optionA: { text: "没人说话、氛围太安静", type: "E" },
+        optionB: { text: "被迫一直社交、没有个人空间", type: "I" }
+    },
+    {
+        id: 25,
+        text: "当需要做出重要选择时，你更想要：",
+        optionA: { text: "多征求身边人的意见", type: "E" },
+        optionB: { text: "自己关起门来认真想清楚", type: "I" }
+    },
+
+    // ========= 26-50：感觉(S) / 直觉(N) =========
+    {
+        id: 26,
+        text: "面对新知识，你更喜欢：",
+        optionA: { text: "先弄清具体定义、例子和细节", type: "S" },
+        optionB: { text: "先抓住整体框架和大概逻辑", type: "N" }
+    },
+    {
+        id: 27,
+        text: "学习一门新技能时，你更倾向：",
+        optionA: { text: "按步骤一步一步练习", type: "S" },
+        optionB: { text: "先理解原理，再自由发挥", type: "N" }
+    },
+    {
+        id: 28,
+        text: "看说明书或操作指南时，你通常：",
+        optionA: { text: "认真按说明书一步步来", type: "S" },
+        optionB: { text: "大致扫一眼就开始尝试", type: "N" }
+    },
+    {
+        id: 29,
+        text: "在听别人讲故事时，你更在意：",
+        optionA: { text: "发生了什么、时间地点细节", type: "S" },
+        optionB: { text: "故事想表达的含义和观点", type: "N" }
+    },
+    {
+        id: 30,
+        text: "你做事情时，更像是：",
+        optionA: { text: "脚踏实地，先解决眼前问题", type: "S" },
+        optionB: { text: "经常联想到以后可能发展成什么", type: "N" }
+    },
+    {
+        id: 31,
+        text: "面对一份长文档，你会：",
+        optionA: { text: "从头到尾按顺序仔细阅读", type: "S" },
+        optionB: { text: "先看目录、大标题再决定重点", type: "N" }
+    },
+    {
+        id: 32,
+        text: "别人夸你时，更常说你：",
+        optionA: { text: "细心、靠谱、做事很稳", type: "S" },
+        optionB: { text: "有创意、有想法、点子多", type: "N" }
+    },
+    {
+        id: 33,
+        text: "你更容易记住的是：",
+        optionA: { text: "实际发生过的画面和细节", type: "S" },
+        optionB: { text: "当时的感受和背后的意义", type: "N" }
+    },
+    {
+        id: 34,
+        text: "在做计划时，你更关注：",
+        optionA: { text: "可行性、资源和现实条件", type: "S" },
+        optionB: { text: "如果顺利的话会带来什么改变", type: "N" }
+    },
+    {
+        id: 35,
+        text: "如果必须在两种任务中选一项，你会选：",
+        optionA: { text: "重复但稳定、流程清晰的工作", type: "S" },
+        optionB: { text: "变化多、需要不断想新点子的工作", type: "N" }
+    },
+    {
+        id: 36,
+        text: "看到一个新产品时，你更会关注：",
+        optionA: { text: "做工、材质、参数等具体信息", type: "S" },
+        optionB: { text: "它可能会改变哪些生活方式", type: "N" }
+    },
+    {
+        id: 37,
+        text: "在团队中，你更擅长：",
+        optionA: { text: "把想法落地成具体步骤", type: "S" },
+        optionB: { text: "提出新方向、新构想", type: "N" }
+    },
+    {
+        id: 38,
+        text: "你更倾向于相信：",
+        optionA: { text: "眼前看得见摸得着的东西", type: "S" },
+        optionB: { text: "尚未发生但合乎逻辑的可能性", type: "N" }
+    },
+    {
+        id: 39,
+        text: "你更享受哪种内容：",
+        optionA: { text: "真实生活 vlog、纪录片", type: "S" },
+        optionB: { text: "科幻设定、世界观构建类故事", type: "N" }
+    },
+    {
+        id: 40,
+        text: "当别人提出一个大胆想法时，你的第一反应：",
+        optionA: { text: "先想想现实中是否可行", type: "S" },
+        optionB: { text: "先觉得有趣，想象它的发展", type: "N" }
+    },
+    {
+        id: 41,
+        text: "你对“细节”与“创意”的偏好更接近：",
+        optionA: { text: "细节到位更重要，创意其次", type: "S" },
+        optionB: { text: "有创意更重要，细节可以慢慢补", type: "N" }
+    },
+    {
+        id: 42,
+        text: "在学习时，你更习惯：",
+        optionA: { text: "做大量练习题来巩固", type: "S" },
+        optionB: { text: "自己总结模型和原理", type: "N" }
+    },
+    {
+        id: 43,
+        text: "你更容易被哪种任务拖住：",
+        optionA: { text: "复杂但清晰、只是量大的事务", type: "S" },
+        optionB: { text: "方向模糊、需要自己想出方案的事", type: "N" }
+    },
+    {
+        id: 44,
+        text: "面对“空想家”和“老黄牛”，你更像：",
+        optionA: { text: "偏向脚踏实地的老黄牛", type: "S" },
+        optionB: { text: "偏向爱构想的空想者", type: "N" }
+    },
+    {
+        id: 45,
+        text: "当要解释一个概念给别人听时，你更常：",
+        optionA: { text: "举身边具体的例子", type: "S" },
+        optionB: { text: "先说原理，再类比延伸", type: "N" }
+    },
+    {
+        id: 46,
+        text: "你做选择时，更在意：",
+        optionA: { text: "此刻实际得到什么", type: "S" },
+        optionB: { text: "它将来可能带来的长远影响", type: "N" }
+    },
+    {
+        id: 47,
+        text: "当别人说“感觉不太对”时，你更会：",
+        optionA: { text: "追问具体哪里不对", type: "S" },
+        optionB: { text: "先接受直觉，再慢慢找原因", type: "N" }
+    },
+    {
+        id: 48,
+        text: "你更容易沉迷哪种体验：",
+        optionA: { text: "手作、烹饪、拼装等动手类", type: "S" },
+        optionB: { text: "脑中构思、设想未来场景", type: "N" }
+    },
+    {
+        id: 49,
+        text: "别人觉得你更擅长：",
+        optionA: { text: "把事情做得扎实可靠", type: "S" },
+        optionB: { text: "想到别人想不到的点子", type: "N" }
+    },
+    {
+        id: 50,
+        text: "如果只能保留一种能力，你更想要：",
+        optionA: { text: "一步一步把事情做成的耐心", type: "S" },
+        optionB: { text: "一眼看到趋势和可能性的洞察力", type: "N" }
+    },
+
+    // ========= 51-75：思考(T) / 情感(F) =========
+    {
+        id: 51,
+        text: "在做决定时，你更偏向：",
+        optionA: { text: "先看利弊和逻辑是否合理", type: "T" },
+        optionB: { text: "先考虑自己和他人的感受", type: "F" }
+    },
+    {
+        id: 52,
+        text: "当你和别人意见不合时，你会：",
+        optionA: { text: "直接谈论问题本身，尝试说服对方", type: "T" },
+        optionB: { text: "注意语气，尽量不伤害对方感受", type: "F" }
+    },
+    {
+        id: 53,
+        text: "别人评价你时，更容易说：",
+        optionA: { text: "理性客观，有时有点冷", type: "T" },
+        optionB: { text: "体贴温和，有时有点软", type: "F" }
+    },
+    {
+        id: 54,
+        text: "面对一个难题，你更像：",
+        optionA: { text: "拆解问题、分析原因和结构", type: "T" },
+        optionB: { text: "先看会影响到谁、大家会怎样", type: "F" }
+    },
+    {
+        id: 55,
+        text: "在团队决策中，你更看重：",
+        optionA: { text: "效率、公平和最佳方案", type: "T" },
+        optionB: { text: "团队氛围和每个人的感受", type: "F" }
+    },
+    {
+        id: 56,
+        text: "当别人向你倾诉时，你更常：",
+        optionA: { text: "帮对方分析解决办法", type: "T" },
+        optionB: { text: "先共情安慰，再慢慢谈解决", type: "F" }
+    },
+    {
+        id: 57,
+        text: "你更容易被哪种情景触动：",
+        optionA: { text: "看到一个复杂问题被完美解决", type: "T" },
+        optionB: { text: "看到一个人被真心理解和接纳", type: "F" }
+    },
+    {
+        id: 58,
+        text: "当你觉得某人错误时，你通常：",
+        optionA: { text: "直接指出来，觉得有必要纠正", type: "T" },
+        optionB: { text: "斟酌表达方式，避免对方难堪", type: "F" }
+    },
+    {
+        id: 59,
+        text: "你更认同哪一种说法：",
+        optionA: { text: "正确比好听更重要", type: "T" },
+        optionB: { text: "好听但真诚的方式更重要", type: "F" }
+    },
+    {
+        id: 60,
+        text: "当需要批评别人工作时，你会：",
+        optionA: { text: "直截了当指出问题所在", type: "T" },
+        optionB: { text: "先肯定再委婉提出建议", type: "F" }
+    },
+    {
+        id: 61,
+        text: "你做选择时，更能接受：",
+        optionA: { text: "对事不对人，有时显得冷酷", type: "T" },
+        optionB: { text: "为照顾感受牺牲一点效率", type: "F" }
+    },
+    {
+        id: 62,
+        text: "你对“逻辑正确但伤人”的评价是：",
+        optionA: { text: "虽然不好听，但至少是真话", type: "T" },
+        optionB: { text: "说话方式不对，会破坏关系", type: "F" }
+    },
+    {
+        id: 63,
+        text: "你更愿意别人怎样对你：",
+        optionA: { text: "诚实直接，不拐弯抹角", type: "T" },
+        optionB: { text: "体贴委婉，注意你的情绪", type: "F" }
+    },
+    {
+        id: 64,
+        text: "当你犯错时，你更容易：",
+        optionA: { text: "关注哪里判断失误、如何改进", type: "T" },
+        optionB: { text: "关注是否让别人失望或担心", type: "F" }
+    },
+    {
+        id: 65,
+        text: "在讨论中，你更常：",
+        optionA: { text: "不断提出反驳和修正观点", type: "T" },
+        optionB: { text: "更关注大家是否相互理解", type: "F" }
+    },
+    {
+        id: 66,
+        text: "你更欣赏哪种人：",
+        optionA: { text: "极其理智清醒、判断精准的人", type: "T" },
+        optionB: { text: "极其善良温柔、懂得照顾他人的人", type: "F" }
+    },
+    {
+        id: 67,
+        text: "在处理冲突时，你更关注：",
+        optionA: { text: "事情本身谁对谁错", type: "T" },
+        optionB: { text: "怎么让双方都能接受", type: "F" }
+    },
+    {
+        id: 68,
+        text: "你更害怕哪一种自己：",
+        optionA: { text: "被情绪左右，失去判断力", type: "T" },
+        optionB: { text: "过于冷漠，不再关心他人感受", type: "F" }
+    },
+    {
+        id: 69,
+        text: "在工作中，你更看重：",
+        optionA: { text: "能力和结果是否达标", type: "T" },
+        optionB: { text: "人际关系是否和谐", type: "F" }
+    },
+    {
+        id: 70,
+        text: "当你需要给别人打分时，你更可能：",
+        optionA: { text: "严格按标准来，不容易给高分", type: "T" },
+        optionB: { text: "会考虑对方努力程度与处境", type: "F" }
+    },
+    {
+        id: 71,
+        text: "你对“感性”这个词的感受更接近：",
+        optionA: { text: "容易不理性，需要控制", type: "T" },
+        optionB: { text: "让人有温度，是宝贵的特质", type: "F" }
+    },
+    {
+        id: 72,
+        text: "别人更常向你求助的是：",
+        optionA: { text: "分析问题、帮忙出主意", type: "T" },
+        optionB: { text: "倾诉情绪、寻求安慰", type: "F" }
+    },
+    {
+        id: 73,
+        text: "面对“不公平但有人受益”的情况，你更在意：",
+        optionA: { text: "规则被破坏，这是问题", type: "T" },
+        optionB: { text: "有人因此得到帮助也算不错", type: "F" }
+    },
+    {
+        id: 74,
+        text: "在亲密关系中，你更可能：",
+        optionA: { text: "用行动和解决问题来表达爱", type: "T" },
+        optionB: { text: "用陪伴和情绪回应来表达爱", type: "F" }
+    },
+    {
+        id: 75,
+        text: "如果必须选一个，你更希望被认为：",
+        optionA: { text: "非常聪明、判断准确", type: "T" },
+        optionB: { text: "非常善良、值得信任", type: "F" }
+    },
+
+    // ========= 76-100：判断(J) / 知觉(P) =========
+    {
+        id: 76,
+        text: "面对一份作业或项目，你通常：",
+        optionA: { text: "提前规划，尽量早些完成", type: "J" },
+        optionB: { text: "边拖边做，依靠最后的冲刺", type: "P" }
+    },
+    {
+        id: 77,
+        text: "你更喜欢哪种生活状态：",
+        optionA: { text: "有计划、有节奏，基本按表走", type: "J" },
+        optionB: { text: "相对自由，随时可以调整安排", type: "P" }
+    },
+    {
+        id: 78,
+        text: "制定计划后，你更常：",
+        optionA: { text: "尽量按照计划执行", type: "J" },
+        optionB: { text: "把计划当参考，随时可以改", type: "P" }
+    },
+    {
+        id: 79,
+        text: "出门旅行时，你更偏向：",
+        optionA: { text: "提前查好路线、景点和时间表", type: "J" },
+        optionB: { text: "大致有方向，现场看情况再决定", type: "P" }
+    },
+    {
+        id: 80,
+        text: "当事情突然被打乱原计划时，你会：",
+        optionA: { text: "比较烦躁，需要重新安排", type: "J" },
+        optionB: { text: "觉得还好，顺势调整就行", type: "P" }
+    },
+    {
+        id: 81,
+        text: "你对“截止日期”的态度更像：",
+        optionA: { text: "最好提前完成才安心", type: "J" },
+        optionB: { text: "会做到，但多半靠临近时爆发", type: "P" }
+    },
+    {
+        id: 82,
+        text: "你的桌面或房间通常：",
+        optionA: { text: "相对整洁，有基本分类", type: "J" },
+        optionB: { text: "看起来乱，但自己心里有数", type: "P" }
+    },
+    {
+        id: 83,
+        text: "当你开始做一件事时，你更习惯：",
+        optionA: { text: "先明确目标和步骤，再动手", type: "J" },
+        optionB: { text: "先动起来，一边做一边摸索", type: "P" }
+    },
+    {
+        id: 84,
+        text: "你更喜欢哪种任务：",
+        optionA: { text: "有清晰边界和完成标准的任务", type: "J" },
+        optionB: { text: "可以自己定义流程和结果的任务", type: "P" }
+    },
+    {
+        id: 85,
+        text: "别人觉得你更像：",
+        optionA: { text: "有条理、靠谱、值得托付", type: "J" },
+        optionB: { text: "灵活、随性、充满即兴感", type: "P" }
+    },
+    {
+        id: 86,
+        text: "当一件事情还没定好时，你会：",
+        optionA: { text: "有些焦虑，想尽快敲定", type: "J" },
+        optionB: { text: "可以拖一拖，先保持开放", type: "P" }
+    },
+    {
+        id: 87,
+        text: "你对“临时改变计划”的接受度：",
+        optionA: { text: "不太喜欢，尽量避免", type: "J" },
+        optionB: { text: "没关系，甚至会觉得更有趣", type: "P" }
+    },
+    {
+        id: 88,
+        text: "在做多件事时，你更可能：",
+        optionA: { text: "排优先级，按顺序一个个来", type: "J" },
+        optionB: { text: "多线并行，想到哪做到哪", type: "P" }
+    },
+    {
+        id: 89,
+        text: "你更享受哪种日程表：",
+        optionA: { text: "时间和事项都写得相对清楚", type: "J" },
+        optionB: { text: "只标出重点，其余随缘安排", type: "P" }
+    },
+    {
+        id: 90,
+        text: "面对突然出现的新机会，你会：",
+        optionA: { text: "先看是否影响原有计划", type: "J" },
+        optionB: { text: "先试着接一下，再看怎么调整", type: "P" }
+    },
+    {
+        id: 91,
+        text: "你做事时，更希望：",
+        optionA: { text: "事情有个明确的结束点", type: "J" },
+        optionB: { text: "可以不断调整和优化，不必那么快定型", type: "P" }
+    },
+    {
+        id: 92,
+        text: "别人对你的吐槽更可能是：",
+        optionA: { text: "有点死板，太在意规则", type: "J" },
+        optionB: { text: "有点拖延，太随性不稳定", type: "P" }
+    },
+    {
+        id: 93,
+        text: "在分配任务时，你更喜欢：",
+        optionA: { text: "提前知道具体内容和期限", type: "J" },
+        optionB: { text: "给个方向，细节可以自己决定", type: "P" }
+    },
+    {
+        id: 94,
+        text: "你更倾向的生活节奏是：",
+        optionA: { text: "每天大致按固定模式进行", type: "J" },
+        optionB: { text: "每天都有可能完全不同", type: "P" }
+    },
+    {
+        id: 95,
+        text: "面对“突发灵感”和“既定任务”，你更会先：",
+        optionA: { text: "完成手头既定任务再说", type: "J" },
+        optionB: { text: "先趁热把灵感做点东西出来", type: "P" }
+    },
+    {
+        id: 96,
+        text: "当你把一件事情做好后，你更希望：",
+        optionA: { text: "结束归档，不要再反复改动", type: "J" },
+        optionB: { text: "以后还可以随时回来继续优化", type: "P" }
+    },
+    {
+        id: 97,
+        text: "你对“提前很多完成任务”的感受：",
+        optionA: { text: "安心舒服，可以提前放松", type: "J" },
+        optionB: { text: "有点怪，反正最后再冲也能完成", type: "P" }
+    },
+    {
+        id: 98,
+        text: "你更容易出现哪种情况：",
+        optionA: { text: "事都做完了才会真正放松", type: "J" },
+        optionB: { text: "事情没完全做完也能先玩一会儿", type: "P" }
+    },
+    {
+        id: 99,
+        text: "如果必须选择一种评价，你更接受：",
+        optionA: { text: "可靠稳定，按时完成任务", type: "J" },
+        optionB: { text: "灵活机动，善于应对变化", type: "P" }
+    },
+    {
+        id: 100,
+        text: "综合来看，你更希望自己的生活：",
+        optionA: { text: "有秩序、有计划、可预期", type: "J" },
+        optionB: { text: "充满弹性、变化和惊喜", type: "P" }
+    }
+];
+
+
         const personalityData = {
+    /* ================== 战略家 · INTJ ================== */
     "INTJ": {
-        title: "建筑师 (The Architect)",
-        // 这里的链接指向你的GitHub仓库，假设文件名为小写的 intj
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/intj", 
-        rarity: "约 2%（极稀有）",
+        title: "战略家 (The Architect)",
+        rarity: "约 2% · 稀有人群",
+        careers: [
+            { name: "系统架构师", match: 98 },
+            { name: "战略咨询顾问", match: 95 },
+            { name: "AI / 算法科学家", match: 92 },
+            { name: "投资分析师", match: 89 },
+            { name: "科研项目负责人", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ENFP",
+            conflict: "ESFP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-indigo-500 pl-4 bg-indigo-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 INTJ，你是顶级的战略思想家。你不仅拥有丰富的想象力，还具备将想法转化为现实的冷静决断力。你对知识有着无尽的渴望，总是质疑现状，寻找更优解。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>理性客观：</strong> 善于用逻辑抽丝剥茧，快速抓住问题本质。</li>
-                <li><strong>长期规划：</strong> 喜欢从全局出发，制定清晰的中长期路线图。</li>
-                <li><strong>独立自主：</strong> 不随波逐流，更愿意按照自己的标准行事。</li>
-                <li><strong>高标准高要求：</strong> 对自己和项目质量都有近乎苛刻的追求。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>情绪表达克制：</strong> 习惯压抑情绪，容易被他人误解为“高冷”或“不近人情”。</li>
-                <li><strong>不耐低效：</strong> 对低效流程与“无意义社交”非常敏感，容易表现出不耐烦。</li>
-                <li><strong>完美主义：</strong> 有时会因为“还不够完美”而迟迟不愿落地执行。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>
-                INTJ 适合在需要<strong>战略规划、独立思考、体系设计</strong>的岗位上发光发热，例如：
-            </p>
-            <ul>
-                <li><strong>产品经理 / 解决方案架构师：</strong> 负责设计系统级方案与路线图。</li>
-                <li><strong>科研 / 数据分析：</strong> 深入钻研问题，提出创新性模型与假设。</li>
-                <li><strong>战略咨询 / 投资分析：</strong> 从宏观视角评估风险与机会。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>练习用更温和的方式表达批评，让“真相”也能被愉快地接收。</li>
-                <li>适当降低对完美的执念，把“持续迭代”当作另一种形式的完美。</li>
-                <li>刻意安排与他人的情感连接时间，让关系也成为你的长期资产。</li>
-            </ul>
+            <h3><i class="fas fa-brain"></i> 认知架构解析</h3>
+            <p>作为 INTJ，你习惯先搭建一套完整的逻辑体系，再去行动。主导功能<strong>内向直觉（Ni）</strong>让你天然关注长期趋势和隐含规律，辅以<strong>外向思维（Te）</strong>，使你擅长做出理性、冷静、高效的决策。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>全局规划能力</strong>
+                    <span class="text-sm text-slate-400">擅长从 0 到 1 设计系统与路线图，看得远、算得清。</span>
+                </div>
+                <div class="report-card">
+                    <strong>理性而独立</strong>
+                    <span class="text-sm text-slate-400">不轻易随波逐流，更相信证据和逻辑，而不是情绪和氛围。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 逻辑学家 · INTP ================== */
     "INTP": {
         title: "逻辑学家 (The Logician)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/intp",
-        rarity: "约 3%（稀有理性型）",
+        rarity: "约 3% · 思考者",
+        careers: [
+            { name: "算法工程师", match: 96 },
+            { name: "理论研究员", match: 94 },
+            { name: "数据科学家", match: 92 },
+            { name: "产品架构设计师", match: 88 },
+            { name: "发明家 / 创客", match: 85 }
+        ],
+        relationships: {
+            soulmate: "ENTJ",
+            conflict: "ESFJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 INTP，你是天生的思想探索者，喜欢拆解概念、构建模型、追问“为什么”。你不满足于表面答案，更在意体系是否自洽、逻辑是否严谨。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>抽象思维强：</strong> 擅长从复杂信息中提炼出本质规律与底层逻辑。</li>
-                <li><strong>好奇心驱动：</strong> 对新知识、新理论保持高度兴趣，乐于自学钻研。</li>
-                <li><strong>创意点子多：</strong> 能提出非传统、跳脱框架的问题解决方案。</li>
-                <li><strong>客观冷静：</strong> 遇到问题时更倾向于“分析”，而不是“情绪化”。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>行动拖延：</strong> 想法很多，但容易卡在思考层面，缺少落地执行。</li>
-                <li><strong>表达过于理性：</strong> 可能忽略他人感受，被视为“不合群”或“不接地气”。</li>
-                <li><strong>兴趣游移：</strong> 热情来得快去得也快，长期专注和坚持有时是挑战。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>INTP 适合从事需要<strong>独立思考、理论构建、系统设计</strong>的领域：</p>
-            <ul>
-                <li><strong>程序开发 / 算法 / AI 研究：</strong> 把抽象逻辑变成可运行的系统。</li>
-                <li><strong>科研 / 学术：</strong> 深挖一个问题，在细分领域做出原创贡献。</li>
-                <li><strong>产品架构 / 技术顾问：</strong> 站在系统层面做技术决策。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>尝试给每个想法配一个“小实验”，让思考更快变成可验证行动。</li>
-                <li>在沟通中多加一句：“我理解这对你来说可能感受是……” 来补足情感维度。</li>
-                <li>为自己设定“阶段性专注主题”，避免因兴趣分散而错失长期积累。</li>
-            </ul>
+            <h3><i class="fas fa-brain"></i> 认知架构解析</h3>
+            <p>INTP 往往被称为“人形调试器”。主导功能<strong>内向思维（Ti）</strong>驱动你不断拆解概念、优化模型，追求“逻辑上自洽”。辅助功能<strong>外向直觉（Ne）</strong>让你在多个可能性之间跳跃，提出别人想不到的点子。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>强悍的抽象能力</strong>
+                    <span class="text-sm text-slate-400">能迅速抓住问题的本质，用简单模型解释复杂现象。</span>
+                </div>
+                <div class="report-card">
+                    <strong>创造性解题</strong>
+                    <span class="text-sm text-slate-400">不按套路出牌，喜欢用“非常规路径”解决技术或理论难题。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 指挥官 · ENTJ ================== */
     "ENTJ": {
         title: "指挥官 (The Commander)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/entj",
-        rarity: "约 2%（强势领导型）",
+        rarity: "约 2% · 领导型",
+        careers: [
+            { name: "企业管理者 / CEO", match: 97 },
+            { name: "战略咨询合伙人", match: 95 },
+            { name: "商业拓展负责人", match: 92 },
+            { name: "投行 / PE 合伙人", match: 90 },
+            { name: "大型项目总监", match: 88 }
+        ],
+        relationships: {
+            soulmate: "INTP",
+            conflict: "ISFP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ENTJ，你天生具备领导与统筹能力，擅长在混乱中建立秩序，在不确定中找到方向。你果断、目标感极强，非常在意“效率”和“结果”。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>目标导向：</strong> 能快速设定清晰目标，并拆解为可执行步骤。</li>
-                <li><strong>组织统筹能力强：</strong> 擅长调配资源、分配任务、推动项目进展。</li>
-                <li><strong>抗压能力高：</strong> 面对压力与挑战时，反而会激发斗志。</li>
-                <li><strong>决策果断：</strong> 不拖泥带水，敢于拍板与承担责任。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>控制感较强：</strong> 容易不自觉地“替别人做决定”，忽略对方主观感受。</li>
-                <li><strong>耐心有限：</strong> 对“低效率”“犹豫不决”会相当敏感。</li>
-                <li><strong>忽略情绪：</strong> 太重视结果，可能在无意中伤害他人感受。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ENTJ 拥有天然的<strong>管理、统筹、决策</strong>优势：</p>
-            <ul>
-                <li><strong>企业管理者 / 创业者：</strong> 搭团队、定战略、冲业绩。</li>
-                <li><strong>咨询顾问 / 投资人：</strong> 用宏观视角评估项目和资源配置。</li>
-                <li><strong>运营 / 项目负责人：</strong> 在复杂系统中保持整体效率。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>在推进目标前，先问一句：“你怎么看？” 给他人更多参与感。</li>
-                <li>将“关心人”与“完成事”并列为两大 KPI，而不是只盯结果。</li>
-                <li>允许团队成员用不同方式做事，结果达成即可，不必事事掌控细节。</li>
-            </ul>
+            <h3><i class="fas fa-bullseye"></i> 认知架构解析</h3>
+            <p>ENTJ 天生带有“把事情做成”的气场。主导功能<strong>外向思维（Te）</strong>让你非常在意效率、结果和目标达成，辅助的<strong>内向直觉（Ni）</strong>又使你不会只盯眼前，而是能搭建宏观蓝图。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>决策与执行力</strong>
+                    <span class="text-sm text-slate-400">能快速评估方案利弊，下决定并推动团队落地。</span>
+                </div>
+                <div class="report-card">
+                    <strong>组织与统筹</strong>
+                    <span class="text-sm text-slate-400">擅长合理分配资源，搭建流程，把混乱变成秩序。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 辩论家 · ENTP ================== */
     "ENTP": {
         title: "辩论家 (The Debater)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/entp",
-        rarity: "约 3%（创意辩思型）",
+        rarity: "约 3% · 颠覆者",
+        careers: [
+            { name: "创新产品经理", match: 95 },
+            { name: "创业者 / 连续创业者", match: 94 },
+            { name: "品牌策划 / 创意总监", match: 92 },
+            { name: "商业模式设计师", match: 90 },
+            { name: "战略顾问", match: 87 }
+        ],
+        relationships: {
+            soulmate: "INFJ",
+            conflict: "ISFJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-green-500 pl-4 bg-green-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ENTP，你是点子和观点的“旋风制造机”。你喜欢碰撞思想、挑战传统、提出新鲜的视角，用脑洞和逻辑让世界变得更有趣。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>创意爆棚：</strong> 总能想到别人没想到的可能性和方案。</li>
-                <li><strong>表达能力强：</strong> 口才佳，善于辩论、说服与演讲。</li>
-                <li><strong>适应性高：</strong> 面对变化从不慌乱，甚至享受“不确定”。</li>
-                <li><strong>善于看到多种角度：</strong> 不轻易站队，更愿意探索问题的多面性。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>容易三分钟热度：</strong> 开头兴致高，后期维护和细节执行容易松懈。</li>
-                <li><strong>辩论成瘾：</strong> 有时为“好玩”而争论，忽略他人情绪和边界。</li>
-                <li><strong>难以长期聚焦：</strong> 太多新想法，导致项目收尾质量参差不齐。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ENTP 适合在需要<strong>创新、表达、解决复杂问题</strong>的环境中工作：</p>
-            <ul>
-                <li><strong>创意策划 / 品牌营销：</strong> 用创意给产品和内容注入灵魂。</li>
-                <li><strong>创业 / 商业模式设计：</strong> 探索新模式、新产品、新机会。</li>
-                <li><strong>咨询 / 公共演讲 / 自媒体：</strong> 用观点和表达影响他人。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>给自己的点子配上“执行搭档”，一起把创意落地。</li>
-                <li>学会分辨“有价值的争论”和“纯情绪消耗式争论”。</li>
-                <li>为自己设定“完成成本”，有始有终比永远在路上更有力量。</li>
-            </ul>
+            <h3><i class="fas fa-brain"></i> 认知架构解析</h3>
+            <p>ENTP 喜欢拆掉旧框架，建立新规则。主导功能<strong>外向直觉（Ne）</strong>让你对“新点子、新玩法、新机会”高度敏感，辅以<strong>内向思维（Ti）</strong>，使你能迅速评估这些想法是否逻辑上站得住脚。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>创意与洞察</strong>
+                    <span class="text-sm text-slate-400">极善于头脑风暴，在看似无关的点之间建立连接。</span>
+                </div>
+                <div class="report-card">
+                    <strong>辩论与说服</strong>
+                    <span class="text-sm text-slate-400">喜欢从不同角度挑战观点，推动团队跳出舒适区。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 提倡者 · INFJ ================== */
     "INFJ": {
         title: "提倡者 (The Advocate)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/infj",
-        rarity: "约 1.5%（理想主义稀有人格）",
+        rarity: "约 1.5% · 极稀有人群",
+        careers: [
+            { name: "心理咨询师", match: 96 },
+            { name: "公益 / 社会创新者", match: 94 },
+            { name: "教育工作者", match: 91 },
+            { name: "作家 / 内容创作者", match: 89 },
+            { name: "人力发展顾问", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ENFP",
+            conflict: "ESTP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-purple-500 pl-4 bg-purple-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 INFJ，你兼具深度洞察力与强烈价值感，是典型的“理想主义现实派”。你关注他人的内在需求，希望用自己的力量推动一点真实而温柔的改变。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>共情力强：</strong> 敏锐感知他人情绪与未说出口的真正需求。</li>
-                <li><strong>价值驱动：</strong> 做事不仅看结果，更在乎是否符合内心信念。</li>
-                <li><strong>洞察深刻：</strong> 能看到表象背后的动机、模式与趋势。</li>
-                <li><strong>长期投入：</strong> 一旦认定有意义，会非常投入且忠诚。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>情绪内耗：</strong> 过度关照他人感受，却忽视自己的消耗和界限。</li>
-                <li><strong>完美理想主义：</strong> 很难接受“现实不完美”，容易产生失落感。</li>
-                <li><strong>难以拒绝：</strong> 不愿让别人失望，导致自己压力过大。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>INFJ 适合在需要<strong>深度陪伴、引导、价值塑造</strong>的场景中工作：</p>
-            <ul>
-                <li><strong>心理咨询 / 教育 / 教练：</strong> 陪伴他人成长，看到潜能被激发。</li>
-                <li><strong>公益 / 社会创新：</strong> 用系统化方式改变群体困境。</li>
-                <li><strong>写作 / 内容创作：</strong> 用文字和故事传递价值。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>记住：照顾好自己，也是对他人长期负责的一种方式。</li>
-                <li>区分“理想中的人/世界”和“现实中的人/世界”，给不完美留空间。</li>
-                <li>学会说“不”，你的时间与精力同样珍贵。</li>
-            </ul>
+            <h3><i class="fas fa-heart"></i> 认知架构解析</h3>
+            <p>INFJ 常常是安静但影响力深远的“价值观放大器”。主导功能<strong>内向直觉（Ni）</strong>让你关注人生意义和长远方向，辅以<strong>外向情感（Fe）</strong>，使你愿意投入精力去改善他人的处境。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>共情与洞察人心</strong>
+                    <span class="text-sm text-slate-400">能敏锐感受到他人未说出口的情绪和需求。</span>
+                </div>
+                <div class="report-card">
+                    <strong>价值驱动</strong>
+                    <span class="text-sm text-slate-400">做选择时会考虑“是否符合内心信念”，而不只是收益大小。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 调停者 · INFP ================== */
     "INFP": {
         title: "调停者 (The Mediator)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/infp",
-        rarity: "约 4%（温柔理想派）",
+        rarity: "约 4% · 理想主义者",
+        careers: [
+            { name: "小说家 / 编剧", match: 95 },
+            { name: "心理咨询 / 助人职业", match: 92 },
+            { name: "原创内容创作者", match: 90 },
+            { name: "文化 / 艺术相关职业", match: 88 },
+            { name: "公益项目策划", match: 85 }
+        ],
+        relationships: {
+            soulmate: "ENFJ",
+            conflict: "ESTJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 INFP，你内心拥有一套非常清晰而细腻的价值体系。你温柔、真诚，又带着一点点“理想主义的倔强”，希望世界和人都能更善良、更真实一些。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>真诚善良：</strong> 重视情感与真心，不愿敷衍和表面应付。</li>
-                <li><strong>创造力十足：</strong> 富有想象力，擅长用文字、音乐、图像表达内心世界。</li>
-                <li><strong>包容理解：</strong> 不轻易评判他人，能看到每个人身上的亮点。</li>
-                <li><strong>价值感驱动：</strong> 为“自己认同的事情”可以投入巨大热情。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>逃避冲突：</strong> 不喜欢正面冲突，可能选择沉默或退缩。</li>
-                <li><strong>行动力不足：</strong> 很多美好设想停留在想象层面。</li>
-                <li><strong>自我怀疑：</strong> 对自己的价值过于敏感，容易陷入情绪波动。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>INFP 在需要<strong>创意、表达、助人、价值感</strong>的工作中更容易发光：</p>
-            <ul>
-                <li><strong>写作 / 插画 / 音乐 / 设计：</strong> 把内心故事转化为作品。</li>
-                <li><strong>教育 / 心理 / 社会工作：</strong> 陪伴与支持他人。</li>
-                <li><strong>文化创意 / 品牌故事：</strong> 为品牌注入情感与意义。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>给自己的理想设定“小步骤”，一点点往前走也很有价值。</li>
-                <li>面对冲突时，尝试用“表达感受”代替“完全退缩”。</li>
-                <li>接纳“自己也是普通人”，不必时时完美善良，允许适度的自私与边界。</li>
-            </ul>
+            <h3><i class="fas fa-feather-alt"></i> 认知架构解析</h3>
+            <p>INFP 的世界以“内心价值”为坐标。主导功能<strong>内向情感（Fi）</strong>让你极其在意“这是不是我认同的”，辅助的<strong>外向直觉（Ne）</strong>又带来丰富想象力，使你善于用故事、文字或艺术表达自我。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>深度共情</strong>
+                    <span class="text-sm text-slate-400">会真心站在他人立场思考，而不是“表面安慰”。</span>
+                </div>
+                <div class="report-card">
+                    <strong>创意表达力</strong>
+                    <span class="text-sm text-slate-400">擅长把抽象情绪转化为文字、画面或音乐。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 主人公 · ENFJ ================== */
     "ENFJ": {
         title: "主人公 (The Protagonist)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/enfj",
-        rarity: "约 2.5%（温暖领导者）",
+        rarity: "约 2.5% · 氛围核心",
+        careers: [
+            { name: "团队领导 / 管理者", match: 95 },
+            { name: "教育培训讲师", match: 93 },
+            { name: "组织发展顾问", match: 91 },
+            { name: "HR / 文化负责人", match: 89 },
+            { name: "公益 / 社会组织负责人", match: 87 }
+        ],
+        relationships: {
+            soulmate: "INFP",
+            conflict: "ISTP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-500 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ENFJ，你像一块“情感磁场”，能够自然地凝聚人心、激励他人。你关注群体氛围与每个人的成长，希望团队一起变得更好。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>共情与洞察：</strong> 善于读懂别人的需求与潜能。</li>
-                <li><strong>鼓舞型领导：</strong> 喜欢用鼓励和支持的方式带领团队。</li>
-                <li><strong>组织协调能力强：</strong> 能平衡任务、关系、氛围等多个维度。</li>
-                <li><strong>责任感重：</strong> 对自己答应的事几乎“有求必应”，尽力做到最好。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>容易过度付出：</strong> 为他人考虑过多，却忽略自己的需求。</li>
-                <li><strong>难以拒绝：</strong> 被当成“万能好人”，但内心其实很累。</li>
-                <li><strong>对评价敏感：</strong> 容易被“不被理解”深深刺痛。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ENFJ 适合在需要<strong>协调、带领、激励、教育</strong>的岗位：</p>
-            <ul>
-                <li><strong>团队管理 / HR / 培训：</strong> 关注人的发展与团队氛围。</li>
-                <li><strong>教育 / 心理 / 教练：</strong> 陪伴他人实现潜能。</li>
-                <li><strong>公关 / 活动策划：</strong> 处理关系、搭建连接。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>学会把“照顾自己”排进日程，这不是自私，是续航。</li>
-                <li>不是所有人都准备好被你“拯救”，有些课题需要对方自己完成。</li>
-                <li>分清“别人的情绪”与“自己的责任”，不要为所有人的情绪买单。</li>
-            </ul>
+            <h3><i class="fas fa-users"></i> 认知架构解析</h3>
+            <p>ENFJ 像是团队里的“人心发动机”。主导功能<strong>外向情感（Fe）</strong>使你非常敏感于群体气氛与关系，辅助的<strong>内向直觉（Ni）</strong>让你愿意为他人规划更长期的发展路径。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>激励他人</strong>
+                    <span class="text-sm text-slate-400">善于鼓舞、组织和带动团队，让每个人都看到自己的价值。</span>
+                </div>
+                <div class="report-card">
+                    <strong>协调与沟通</strong>
+                    <span class="text-sm text-slate-400">可以在不同立场之间寻找平衡点，促成共识。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 活动家 · ENFP ================== */
     "ENFP": {
-        title: "竞选者 (The Campaigner)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/enfp",
-        rarity: "约 8%（高能量创意者）",
+        title: "活动家 (The Campaigner)",
+        rarity: "约 7% · 灵感发射机",
+        careers: [
+            { name: "创意策划 / 文案", match: 94 },
+            { name: "新媒体 / 内容博主", match: 93 },
+            { name: "产品体验设计师", match: 90 },
+            { name: "咨询 / 教练类工作", match: 88 },
+            { name: "品牌公关 / 市场", match: 86 }
+        ],
+        relationships: {
+            soulmate: "INTJ",
+            conflict: "ISTJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ENFP，你像一团会发光的火焰，自带感染力和灵感。你热爱自由、多样性与新体验，不愿被僵化规则束缚。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>热情有感染力：</strong> 很容易调动气氛，让周围人觉得“活着很好玩”。</li>
-                <li><strong>创意与灵感丰富：</strong> 能为平凡的事物找到独特角度。</li>
-                <li><strong>重视人与故事：</strong> 对每个人的经历和内心都真诚好奇。</li>
-                <li><strong>适应新环境能力强：</strong> 不惧新挑战，乐于尝试新领域。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>难以坚持：</strong> 起步超快，但中后期的细活会消耗你的耐心。</li>
-                <li><strong>情绪波动大：</strong> 对关系和氛围极其敏感，容易被影响心情。</li>
-                <li><strong>时间管理挑战：</strong> 想做的事太多，容易“手忙心乱”。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ENFP 在需要<strong>创意、人际互动、表达</strong>的场景中最具优势：</p>
-            <ul>
-                <li><strong>新媒体 / 内容创作 / 主播：</strong> 用表达和想象力链接观众。</li>
-                <li><strong>品牌营销 / 活动策划：</strong> 把创意转化为体验感。</li>
-                <li><strong>教育 / 咨询 / 辅导：</strong> 用热情和洞察鼓励他人成长。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>为项目设定“最低完成标准”，先完成，再完美。</li>
-                <li>划分“情绪独处时间”，让自己有空间消化而不是爆发。</li>
-                <li>学会筛选：不是每个机会都要去回应，专注于真正重要的少数。</li>
-            </ul>
+            <h3><i class="fas fa-magic"></i> 认知架构解析</h3>
+            <p>ENFP 像行走的“多巴胺与创意泉眼”。主导功能<strong>外向直觉（Ne）</strong>让你对新鲜事物高度感兴趣，而<strong>内向情感（Fi）</strong>又确保你不会完全被外界裹挟，仍然坚持自己的价值观。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>超强连接力</strong>
+                    <span class="text-sm text-slate-400">容易和各种类型的人打成一片，构建广泛的人脉网络。</span>
+                </div>
+                <div class="report-card">
+                    <strong>灵感驱动</strong>
+                    <span class="text-sm text-slate-400">能在平凡事物中发现有趣切入点，给团队带来活力与点子。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 物流师 · ISTJ ================== */
     "ISTJ": {
         title: "物流师 (The Logistician)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/istj",
-        rarity: "约 11%（稳重实干派）",
+        rarity: "约 11% · 稳定基石",
+        careers: [
+            { name: "财务 / 审计", match: 94 },
+            { name: "行政管理 / 运营", match: 92 },
+            { name: "项目执行专员", match: 90 },
+            { name: "工程实施 / 质检", match: 88 },
+            { name: "法律 / 合规相关", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ESFP",
+            conflict: "ENFP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-slate-500 pl-4 bg-slate-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ISTJ，你踏实、可靠、重视责任和秩序。你更相信事实与经验，而不是空洞承诺，是典型的“说到做到型”人格。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>执行力强：</strong> 安排给你的任务，一般都会按时、按标准完成。</li>
-                <li><strong>重视规则和秩序：</strong> 能保证系统的稳定运作。</li>
-                <li><strong>务实严谨：</strong> 注重细节，不轻易放过错误和疏漏。</li>
-                <li><strong>可靠可信赖：</strong> 身边人常把你视为“定海神针”。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>对变化不适：</strong> 突然的变动会让你感到压力。</li>
-                <li><strong>不爱表达情绪：</strong> 习惯用行动表达在意，言语层面略显冷淡。</li>
-                <li><strong>对“想太多的人”缺乏耐心：</strong> 更偏爱直接简单的沟通方式。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ISTJ 适合在<strong>结构清晰、流程稳定</strong>的环境中工作：</p>
-            <ul>
-                <li><strong>财务 / 审计 / 行政：</strong> 需要严谨和规则意识。</li>
-                <li><strong>工程 / 质检 / 运维：</strong> 保证系统稳定安全运行。</li>
-                <li><strong>公务体系 / 法律相关：</strong> 执行制度、维护秩序。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>在面对变化时，多问一句“这个改变可能带来什么好处？”。</li>
-                <li>适当用语言表达关心，让身边的人更容易感受到你的在意。</li>
-                <li>给自己留一点“试错空间”，不必凡事一次到位。</li>
-            </ul>
+            <h3><i class="fas fa-shield-alt"></i> 认知架构解析</h3>
+            <p>ISTJ 是典型的“靠谱代名词”。主导功能<strong>内向感觉（Si）</strong>让你重视经验、规则与稳定，辅以<strong>外向思维（Te）</strong>，保证你在执行任务时高效、认真且有条理。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>责任心极强</strong>
+                    <span class="text-sm text-slate-400">说到做到，答应的事情会尽全力完成。</span>
+                </div>
+                <div class="report-card">
+                    <strong>细节与秩序</strong>
+                    <span class="text-sm text-slate-400">擅长检查疏漏、维护流程，适合需要精确度的岗位。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 守卫者 · ISFJ ================== */
     "ISFJ": {
         title: "守卫者 (The Defender)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/isfj",
-        rarity: "约 9%（温柔守护型）",
+        rarity: "约 9% · 默默付出者",
+        careers: [
+            { name: "护士 / 医护人员", match: 95 },
+            { name: "教师 / 班主任", match: 93 },
+            { name: "行政 / 后勤支持", match: 91 },
+            { name: "客户服务 / 顾问", match: 89 },
+            { name: "人事 / 职场支持类岗位", match: 87 }
+        ],
+        relationships: {
+            soulmate: "ESFP",
+            conflict: "ENTP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ISFJ，你温和、细心、富有责任感，常常在悄无声息中照顾着他人。你不张扬，却是很多人生活中稳稳的“安全感来源”。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>细致体贴：</strong> 能注意到别人忽略的小细节，并默默照顾到。</li>
-                <li><strong>可靠踏实：</strong> 答应别人的事，会认真放在心上。</li>
-                <li><strong>记忆力好：</strong> 对重要的人和事有深刻而长期的记忆。</li>
-                <li><strong>责任感强：</strong> 感到自己“有义务”把事情做好。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>不擅拒绝：</strong> 容易被动承担过多任务，压垮自己。</li>
-                <li><strong>情绪压抑：</strong> 把不开心藏心里，很少主动倾诉。</li>
-                <li><strong>害怕给别人添麻烦：</strong> 反而让自己承受更多负担。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ISFJ 适合在需要<strong>耐心、细致、关怀</strong>的领域：</p>
-            <ul>
-                <li><strong>护理 / 医疗 / 教育：</strong> 长期陪伴与照顾他人。</li>
-                <li><strong>行政 / 客服 / 后勤：</strong> 保障系统顺畅运作。</li>
-                <li><strong>文案 / 档案管理：</strong> 细致整理信息与资料。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>学会直接表达“我需要帮助”，你也值得被照顾。</li>
-                <li>为自己设定“付出边界”，适当拒绝不是自私。</li>
-                <li>把关注的一部分从“别人怎样”转回“我现在的感受”。</li>
-            </ul>
+            <h3><i class="fas fa-hands-helping"></i> 认知架构解析</h3>
+            <p>ISFJ 常常是团队里“最细腻的守护者”。主导功能<strong>内向感觉（Si）</strong>让你记得别人忽略的小细节，辅助的<strong>外向情感（Fe）</strong>又促使你主动照顾他人的需求与情绪。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>体贴与温度</strong>
+                    <span class="text-sm text-slate-400">会默默记住他人的喜好，并在不经意处给出帮助。</span>
+                </div>
+                <div class="report-card">
+                    <strong>稳定可靠</strong>
+                    <span class="text-sm text-slate-400">适合需要长期耐心、细心和高度责任感的工作场景。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 总经理 · ESTJ ================== */
     "ESTJ": {
         title: "总经理 (The Executive)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/estj",
-        rarity: "约 8%（现实管理者）",
+        rarity: "约 8% · 管理中坚",
+        careers: [
+            { name: "部门经理 / 主管", match: 95 },
+            { name: "项目经理", match: 93 },
+            { name: "运营管理 / 流程负责人", match: 91 },
+            { name: "采购 / 供应链管理", match: 89 },
+            { name: "行政 / 政务相关岗位", match: 87 }
+        ],
+        relationships: {
+            soulmate: "ISFP",
+            conflict: "INFP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-600 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ESTJ，你实干、直接、讲原则，擅长把事情组织起来并高效推进。你重视传统与规则，是典型的“执行与管理中坚力量”。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>组织能力强：</strong> 能清晰分工、设定标准、控制进度。</li>
-                <li><strong>现实理性：</strong> 更关注“现在能做什么”而不是空想。</li>
-                <li><strong>态度干脆：</strong> 表达直接，不绕弯子。</li>
-                <li><strong>守信守规：</strong> 重视承诺和制度，值得信赖。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>容易让人有压迫感：</strong> 直接的表达方式可能被视为“太强势”。</li>
-                <li><strong>对不同想法不够耐心：</strong> 容易认为“绕圈子”的人低效。</li>
-                <li><strong>情感表达较少：</strong> 更多用“做事”而不是“说话”来表达关心。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ESTJ 适合在强调<strong>组织管理、执行落地</strong>的岗位：</p>
-            <ul>
-                <li><strong>部门管理者 / 项目经理：</strong> 保证团队按节奏推进。</li>
-                <li><strong>运营 / 行政管理：</strong> 维护制度与流程。</li>
-                <li><strong>传统行业负责人：</strong> 在稳定框架内追求优化与增长。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>在给出评价前，多问一句“你是怎么考虑的？”。</li>
-                <li>区分“无效低效”与“风格不同”，给多元方式一点空间。</li>
-                <li>偶尔放慢节奏，和身边人聊聊“感受”，而不仅是“事情”。</li>
-            </ul>
+            <h3><i class="fas fa-gavel"></i> 认知架构解析</h3>
+            <p>ESTJ 像是现实世界的“规则执行引擎”。主导功能<strong>外向思维（Te）</strong>让你重视效率与标准，辅以<strong>内向感觉（Si）</strong>，使你倾向于沿用成熟经验来确保结果稳定可靠。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>制度与秩序构建</strong>
+                    <span class="text-sm text-slate-400">擅长制定流程、规范团队行为，减少“各搞各的”。</span>
+                </div>
+                <div class="report-card">
+                    <strong>执行与监督</strong>
+                    <span class="text-sm text-slate-400">会跟进每个节点，确保目标按时按量完成。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 领事 · ESFJ ================== */
     "ESFJ": {
-        title: "执政官 (The Consul)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/esfj",
-        rarity: "约 9%（社交组织者）",
+        title: "领事 (The Consul)",
+        rarity: "约 9% · 社交协调者",
+        careers: [
+            { name: "班主任 / 教务", match: 94 },
+            { name: "HR / 培训专员", match: 92 },
+            { name: "销售 / 客户经理", match: 90 },
+            { name: "活动策划 / 执行", match: 88 },
+            { name: "医护 / 护理相关", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ISFP",
+            conflict: "INTP"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-400 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ESFJ，你擅长照顾关系和氛围，是很多社交场合的“润滑剂”。你重视和谐、礼貌与彼此的体谅。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>社交感知敏锐：</strong> 能快速感知氛围，主动调整自己的状态。</li>
-                <li><strong>乐于付出：</strong> 喜欢为他人提供帮助与支持。</li>
-                <li><strong>组织活动能力强：</strong> 安排聚会、活动、团建都不在话下。</li>
-                <li><strong>重视群体认同：</strong> 善于维护团队和谐。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>过度在意他人评价：</strong> 容易因为一点冷淡或否定而情绪受挫。</li>
-                <li><strong>难以放过自己：</strong> 总觉得“是不是我哪里做得不够好？”。</li>
-                <li><strong>忽略内在需求：</strong> 把注意力都放在外界和别人身上。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ESFJ 在需要<strong>人际互动、服务与协调</strong>的岗位中优势明显：</p>
-            <ul>
-                <li><strong>客服 / 销售 / 公关：</strong> 用真诚与热情连接客户。</li>
-                <li><strong>行政 / 教务 / 班主任：</strong> 管理日常事务与人际关系。</li>
-                <li><strong>活动策划 / 社区运营：</strong> 维护社群氛围和参与度。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>练习问自己：“我现在真正想要的是什么？”。</li>
-                <li>并不是所有人都情绪都与你有关，适当“去人格化”他人的反应。</li>
-                <li>给自己也安排“被照顾”的时间，而不是永远扮演照顾者。</li>
-            </ul>
+            <h3><i class="fas fa-smile-beam"></i> 认知架构解析</h3>
+            <p>ESFJ 通常是环境里的“氛围管理员”。主导功能<strong>外向情感（Fe）</strong>让你高度关注人际关系和集体和谐，辅以<strong>内向感觉（Si）</strong>，使你在照顾他人时既细致又踏实。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>人际维护</strong>
+                    <span class="text-sm text-slate-400">擅长拉近人与人之间的距离，营造温暖的团队氛围。</span>
+                </div>
+                <div class="report-card">
+                    <strong>服务意识强</strong>
+                    <span class="text-sm text-slate-400">会主动发现他人需要什么，并提供具体而实际的帮助。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 鉴赏家 · ISTP ================== */
     "ISTP": {
         title: "鉴赏家 (The Virtuoso)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/istp",
-        rarity: "约 5%（冷静行动派）",
+        rarity: "约 5% · 技术玩家",
+        careers: [
+            { name: "工程师 / 技术工程", match: 95 },
+            { name: "机械 / 结构设计", match: 93 },
+            { name: "运维 / 技术支持", match: 91 },
+            { name: "极限运动 / 户外相关", match: 88 },
+            { name: "产品打样 / 手工制作", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ESFJ",
+            conflict: "ENFJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-600 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ISTP，你冷静、好奇、动手能力强，喜欢直接与真实世界打交道。你习惯自己摸索，用实践检验一切理论。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>动手能力极佳：</strong> 喜欢拆解、修理、改造各种东西。</li>
-                <li><strong>临危不乱：</strong> 在紧急状况下保持冷静和实用主义思维。</li>
-                <li><strong>独立自主：</strong> 不喜欢被束缚，擅长自己解决问题。</li>
-                <li><strong>适应环境：</strong> 对新情况调整速度快，行动灵活。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>不爱解释：</strong> 更倾向用行动而不是语言沟通，容易被误解。</li>
-                <li><strong>情感表达克制：</strong> 内心在意，但嘴上不说。</li>
-                <li><strong>规划感较弱：</strong> 更看重当下体验，长期规划容易被忽略。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ISTP 适合在需要<strong>实操、技术、快速反应</strong>的领域：</p>
-            <ul>
-                <li><strong>工程师 / 技术维护 / 机械相关：</strong> 与设备、系统打交道。</li>
-                <li><strong>应急类岗位：</strong> 如急救、消防、现场处理。</li>
-                <li><strong>户外 / 极限 / 探险类工作：</strong> 将行动力发挥到极致。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>适当把“脑子里已经想好的步骤”说出来，能减少很多误会。</li>
-                <li>为自己设计“简单版长期目标”，不要完全被当下牵着走。</li>
-                <li>当身边人需要安慰时，除了行动，也可以加一句“我在”。</li>
-            </ul>
+            <h3><i class="fas fa-tools"></i> 认知架构解析</h3>
+            <p>ISTP 喜欢“动手拆开世界”。主导功能<strong>内向思维（Ti）</strong>让你想搞清楚“它到底怎么运作”，辅以<strong>外向感觉（Se）</strong>，使你乐于亲自上手尝试、实验与优化。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>动手与实作能力</strong>
+                    <span class="text-sm text-slate-400">在真实环境中解决问题，比纸上谈兵更让你兴奋。</span>
+                </div>
+                <div class="report-card">
+                    <strong>冷静处变</strong>
+                    <span class="text-sm text-slate-400">在突发情况中保持理智，快速判断最佳操作步骤。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 冒险家 · ISFP ================== */
     "ISFP": {
         title: "探险家 (The Adventurer)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/isfp",
-        rarity: "约 6%（安静体验者）",
+        rarity: "约 6% · 氛围艺术家",
+        careers: [
+            { name: "设计师 / 视觉艺术", match: 95 },
+            { name: "插画 / 摄影", match: 93 },
+            { name: "手作 / 工艺创作者", match: 91 },
+            { name: "美容 / 造型相关", match: 88 },
+            { name: "音乐 / 表演艺术", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ESTJ",
+            conflict: "ENTJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-400 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ISFP，你安静却不无趣，敏感却不矫情。你重视当下的感受与体验，喜欢用自己的方式观察世界、创造美感。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>审美与感受力强：</strong> 对色彩、氛围、情绪都很敏锐。</li>
-                <li><strong>温柔而真实：</strong> 不喜欢表演，更愿意保持真诚。</li>
-                <li><strong>尊重他人空间：</strong> 很少强迫别人按自己的方式行事。</li>
-                <li><strong>灵活适应环境：</strong> 在舒适范围内愿意尝试新体验。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>难以表达需求：</strong> 经常把“没关系”挂嘴边，其实心里在意。</li>
-                <li><strong>逃避不愉快：</strong> 遇到冲突会选择回避而不是正面解决。</li>
-                <li><strong>缺乏长期规划：</strong> 更专注当下，未来容易“走一步看一步”。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ISFP 适合在<strong>需要审美、手作、氛围感</strong>的岗位：</p>
-            <ul>
-                <li><strong>设计 / 摄影 / 手工艺：</strong> 用作品表达内心感受。</li>
-                <li><strong>美容 / 形象设计 / 空间布置：</strong> 打造舒适环境。</li>
-                <li><strong>宠物 / 自然 / 艺术相关行业：</strong> 结合感受与温柔。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>尝试把“我喜欢/不喜欢什么”明确说出来，而不是全部迎合。</li>
-                <li>适度提前规划一些关键节点，减轻未来焦虑。</li>
-                <li>允许自己在关系中“占一点位置”，而不是只当陪衬。</li>
-            </ul>
+            <h3><i class="fas fa-palette"></i> 认知架构解析</h3>
+            <p>ISFP 是“用感受创作”的类型。主导功能<strong>内向情感（Fi）</strong>让你有强烈而细腻的内在情绪体验，辅以<strong>外向感觉（Se）</strong>，使你愿意通过视觉、触感、声音等方式把美感呈现出来。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>美感品位</strong>
+                    <span class="text-sm text-slate-400">能捕捉环境中的色彩、氛围与细节，并做出独特表达。</span>
+                </div>
+                <div class="report-card">
+                    <strong>温柔而真实</strong>
+                    <span class="text-sm text-slate-400">不喜欢虚伪包装，更愿意用行动和作品表达自己。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 企业家 · ESTP ================== */
     "ESTP": {
         title: "企业家 (The Entrepreneur)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/estp",
-        rarity: "约 4%（高能行动派）",
+        rarity: "约 4% · 行动派",
+        careers: [
+            { name: "销售高手 / 业务拓展", match: 96 },
+            { name: "创业者", match: 94 },
+            { name: "体育 / 竞技相关", match: 91 },
+            { name: "活动策划 / 现场执行", match: 89 },
+            { name: "高压场景解决者", match: 87 }
+        ],
+        relationships: {
+            soulmate: "ISFJ",
+            conflict: "INFJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ESTP，你喜欢刺激、变化与真实挑战。你不爱纸上谈兵，更愿意“说走就走”“说干就干”。
-            </p>
-
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>行动力爆棚：</strong> 想到就能马上去做。</li>
-                <li><strong>临场应变强：</strong> 面对突发情况反应敏捷。</li>
-                <li><strong>社交灵活：</strong> 容易与不同类型的人打成一片。</li>
-                <li><strong>务实直率：</strong> 不喜欢拐弯抹角，偏爱直接沟通。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>冲动决策：</strong> 有时来不及考虑长期后果。</li>
-                <li><strong>对规则不耐烦：</strong> 觉得繁琐流程浪费时间。</li>
-                <li><strong>难以专注长期项目：</strong> 持续重复的工作会让你很快厌倦。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ESTP 适合在需要<strong>行动、谈判、现场把控</strong>的岗位：</p>
-            <ul>
-                <li><strong>销售 / 商务拓展：</strong> 用反应力与说服力拿下机会。</li>
-                <li><strong>创业 / 实体生意：</strong> 直接与市场打交道。</li>
-                <li><strong>体育 / 户外 / 活动执行：</strong> 在行动中获得能量。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>在“马上行动”前，多问自己一次：“最坏的结果是什么？我能承受吗？”。</li>
-                <li>给自己配备一个“规划型伙伴”，互补优势。</li>
-                <li>学习从经历中总结，而不是只追求下一个刺激。</li>
-            </ul>
+            <h3><i class="fas fa-bolt"></i> 认知架构解析</h3>
+            <p>ESTP 是“边做边想”的典型代表。主导功能<strong>外向感觉（Se）</strong>让你喜欢直接进入现场感受真实情况，辅以<strong>内向思维（Ti）</strong>，帮助你在行动中不断调整策略、找到高性价比的做法。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>高压环境表现力</strong>
+                    <span class="text-sm text-slate-400">越是需要快速反应和大胆决策，你越容易进入“兴奋状态”。</span>
+                </div>
+                <div class="report-card">
+                    <strong>临场 improvisation</strong>
+                    <span class="text-sm text-slate-400">能根据现场反馈即时调整话术和行动路线。</span>
+                </div>
+            </div>
         `
     },
 
+    /* ================== 表演者 · ESFP ================== */
     "ESFP": {
         title: "表演者 (The Entertainer)",
-        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/esfp",
-        rarity: "约 7%（气氛担当）",
+        rarity: "约 7% · 氛围王者",
+        careers: [
+            { name: "主播 / 表演者", match: 95 },
+            { name: "主持 / 活动现场控场", match: 93 },
+            { name: "旅游 / 体验博主", match: 91 },
+            { name: "销售 / 市场推广", match: 89 },
+            { name: "服务体验设计", match: 86 }
+        ],
+        relationships: {
+            soulmate: "ISTJ",
+            conflict: "INTJ"
+        },
         details: `
-            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-pink-500 pl-4 bg-pink-50 py-3 pr-3 rounded-r-lg">
-                <strong>综述：</strong> 作为 ESFP，你是生活的体验家和气氛制造者。你热爱快乐、享受当下，也渴望把这种快乐分享给身边的人。
-            </p>
+            <h3><i class="fas fa-music"></i> 认知架构解析</h3>
+            <p>ESFP 是天生的“现场氛围制造机”。主导功能<strong>外向感觉（Se）</strong>让你极其敏感当下的色彩、音乐与情绪，辅以<strong>内向情感（Fi）</strong>，使你真心想让身边的人放松、开心、享受当下。</p>
+            <h3><i class="fas fa-lightbulb"></i> 核心优势</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="report-card">
+                    <strong>现场感染力</strong>
+                    <span class="text-sm text-slate-400">擅长让本来轻微尴尬的场面变得热烈、有趣。</span>
+                </div>
+                <div class="report-card">
+                    <strong>体验至上</strong>
+                    <span class="text-sm text-slate-400">对“好玩、好看、好感觉”有天然敏感度，适合做体验相关工作。</span>
+                </div>
+            </div>
+        `
+    },
 
-            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-            <ul>
-                <li><strong>社交魅力强：</strong> 很容易让别人感到放松和开心。</li>
-                <li><strong>感受力丰富：</strong> 对美、氛围、体验十分敏感。</li>
-                <li><strong>乐观开朗：</strong> 通常能从困难中看到希望的一面。</li>
-                <li><strong>行动派：</strong> 想到什么体验，马上就去尝试。</li>
-            </ul>
-
-            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-            <ul>
-                <li><strong>容易回避沉重话题：</strong> 不愿面对负面情绪和深度矛盾。</li>
-                <li><strong>消费和时间管理挑战：</strong> 为了当下快乐，可能忽略长期成本。</li>
-                <li><strong>害怕被冷落：</strong> 对“被忽视”的感受非常敏感。</li>
-            </ul>
-
-            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-            <p>ESFP 适合在需要<strong>现场感、审美、人与人互动</strong>的工作：</p>
-            <ul>
-                <li><strong>主持 / 表演 / 娱乐行业：</strong> 站在舞台或镜头前发光。</li>
-                <li><strong>时尚 / 美妆 / 形象设计：</strong> 把美学和体验结合。</li>
-                <li><strong>旅游 / 活动 / 服务业：</strong> 让他人的体验变得更愉快。</li>
-            </ul>
-
-            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-            <ul>
-                <li>给自己设定简单的储蓄与规划规则，让未来的自己也感谢现在的你。</li>
-                <li>允许自己偶尔认真面对“不开心”的部分，而不是全部转移话题。</li>
-                <li>记住：即使不逗笑别人，你本身也值得被喜欢。</li>
-            </ul>
+    /* ================== 默认兜底 ================== */
+    "DEFAULT": {
+        title: "未知人格",
+        rarity: "分析中...",
+        careers: [
+            { name: "数据收集中", match: 0 }
+        ],
+        relationships: {
+            soulmate: "--",
+            conflict: "--"
+        },
+        details: `
+            <p>当前回答数据不足，或类型落在统计边界区间，系统暂时无法给出精确画像。</p>
+            <p>你可以尝试重新作答，或在专业版中完成更多题目，以获得更清晰的性格轮廓。</p>
         `
     }
 };
 
-
         let currentQuestionIndex = 0;
-        let userAnswers = []; 
-        let isTransitioning = false;
-        let currentMode = 'pro';
+        let userAnswers = [];
         let maxQuestions = 0;
+        let radarChartInstance = null;
 
-        const startScreen = document.getElementById('start-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const loadingScreen = document.getElementById('loading-screen');
-        const resultScreen = document.getElementById('result-screen');
-        const questionContainer = document.getElementById('question-container');
-        const btnPrev = document.getElementById('btn-prev');
+        // UI 引用
+        const screens = {
+            start: document.getElementById('start-screen'),
+            quiz: document.getElementById('quiz-screen'),
+            loading: document.getElementById('loading-screen'),
+            result: document.getElementById('result-screen')
+        };
 
+        // 启动
         function startQuiz(mode) {
-            currentMode = mode;
-            userAnswers = [];
-            currentQuestionIndex = 0;
-            const limit = mode === 'simple' ? 32 : 100;
-            maxQuestions = Math.min(limit, questions.length);
-            
-            document.getElementById('mode-name-text').innerText = mode === 'simple' ? '快速模式' : '专业模式';
-            document.getElementById('current-mode-display').classList.remove('hidden');
-
-            startScreen.classList.add('hidden');
-            resultScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            quizScreen.classList.add('fade-in');
-            document.getElementById('sidebar-stats').classList.remove('hidden');
-            document.getElementById('sidebar-stats').classList.add('fade-in');
-
-            loadQuestion();
-        }
-
-        // 答题中重置：带确认
-        function confirmRestart() {
-            if(confirm("确定要重新开始测试吗？当前进度将丢失。")) {
-                restartTest();
+            // 逻辑：快速版最多做32题（如果数组够长），专业版做所有题
+            // 但不能超过实际题目数组的长度，防止报错
+            if (mode === 'simple') {
+                maxQuestions = Math.min(32, questions.length);
+            } else {
+                maxQuestions = questions.length;
             }
-        }
-
-        // 结果页返回首页：直接返回，不确认
-        function goHome() {
-            restartTest();
-            // 确保回到顶部
-            window.scrollTo(0, 0);
-            document.body.scrollTop = 0; // Safari
-            document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
-        }
-
-        function restartTest() {
-            userAnswers = [];
-            currentQuestionIndex = 0;
-            isTransitioning = false;
-            quizScreen.classList.add('hidden');
-            resultScreen.classList.add('hidden');
-            loadingScreen.classList.add('hidden');
-            loadingScreen.classList.remove('flex');
-            startScreen.classList.remove('hidden');
-            document.getElementById('sidebar-stats').classList.add('hidden');
-            document.getElementById('current-mode-display').classList.add('hidden');
-            document.getElementById('percentage-display').innerText = "0%";
-            document.getElementById('sidebar-progress').style.width = "0%";
+            
+            // UI 切换动画
+            screens.start.classList.add('slide-out-left');
+            setTimeout(() => {
+                screens.start.classList.add('hidden');
+                screens.start.classList.remove('slide-out-left');
+                
+                screens.quiz.classList.remove('hidden');
+                screens.quiz.classList.add('fade-in');
+                
+                // 侧边栏动效
+                document.getElementById('mode-indicator').style.opacity = '1';
+                document.getElementById('sidebar-stats').style.opacity = '1';
+                document.getElementById('mode-name-text').innerText = mode === 'simple' ? '快速扫描' : '深度解析';
+                
+                loadQuestion();
+            }, 400);
         }
 
         function loadQuestion() {
-            const q = questions[currentQuestionIndex];
-            questionContainer.classList.remove('slide-out', 'slide-in');
-            void questionContainer.offsetWidth;
-            questionContainer.classList.add('slide-in');
-
-            document.getElementById('question-text').innerText = q.text;
-            document.getElementById('option-a-text').innerText = q.optionA.text;
-            document.getElementById('option-b-text').innerText = q.optionB.text;
-            
-            const currentNum = currentQuestionIndex + 1;
-            document.getElementById('question-counter-text').innerText = currentNum < 10 ? `0${currentNum}` : currentNum;
-            
-            if (currentQuestionIndex === 0) {
-                btnPrev.style.opacity = "0";
-                btnPrev.style.pointerEvents = "none";
-            } else {
-                btnPrev.style.opacity = "1";
-                btnPrev.style.pointerEvents = "auto";
+            if (currentQuestionIndex >= maxQuestions) {
+                startAnalysis();
+                return;
             }
-            updateProgress();
-            resetButtonStyle('btn-option-a');
-            resetButtonStyle('btn-option-b');
-            isTransitioning = false;
+
+            const q = questions[currentQuestionIndex];
+            const container = document.getElementById('question-container');
+            
+            // 简单的淡入淡出
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                document.getElementById('question-text').innerText = q.text;
+                document.getElementById('option-a-text').innerText = q.optionA.text;
+                document.getElementById('option-b-text').innerText = q.optionB.text;
+                document.getElementById('question-counter-text').innerText = (currentQuestionIndex + 1).toString().padStart(2, '0');
+                
+                // 重置按钮样式
+                document.querySelectorAll('#quiz-screen button[id^="btn-option"]').forEach(btn => {
+                    btn.className = "group w-full p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 transition-all duration-300 text-left flex items-center relative overflow-hidden shadow-sm";
+                    const badge = btn.querySelector('div:nth-child(2)');
+                    badge.className = "w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg font-bold mr-6 text-slate-400 group-hover:text-white transition-all font-mono z-10 flex-shrink-0";
+                    // 移除选中光效背景
+                    const bg = btn.querySelector('div:first-child');
+                    bg.classList.remove('opacity-100');
+                    bg.classList.add('opacity-0');
+                });
+
+                // 上一题按钮逻辑
+                const prevBtn = document.getElementById('btn-prev');
+                if (currentQuestionIndex > 0) {
+                    prevBtn.style.opacity = '1';
+                    prevBtn.style.pointerEvents = 'auto';
+                } else {
+                    prevBtn.style.opacity = '0';
+                    prevBtn.style.pointerEvents = 'none';
+                }
+
+                updateProgress();
+
+                container.style.transition = 'all 0.4s ease-out';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 200);
         }
-        
+
+        function selectOption(choice) {
+            const q = questions[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = choice === 'A' ? q.optionA.type : q.optionB.type;
+
+            // 选中视觉反馈 (更完美的交互)
+            const btnId = choice === 'A' ? 'btn-option-a' : 'btn-option-b';
+            const btn = document.getElementById(btnId);
+            const colorClass = choice === 'A' ? 'border-indigo-500 bg-indigo-600/10' : 'border-purple-500 bg-purple-600/10';
+            const glowClass = choice === 'A' ? 'shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'shadow-[0_0_20px_rgba(168,85,247,0.2)]';
+            
+            btn.className = `w-full p-6 rounded-2xl border ${colorClass} ${glowClass} transition-all duration-200 text-left flex items-center relative overflow-hidden`;
+            
+            // 激活 badge 颜色
+            const badge = btn.querySelector('div:nth-child(2)');
+            badge.classList.remove('bg-white/5', 'text-slate-400');
+            badge.classList.add(choice === 'A' ? 'bg-indigo-500' : 'bg-purple-500', 'text-white', 'border-transparent');
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, 300);
+        }
+
         function prevQuestion() {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
@@ -1710,155 +1788,130 @@
             const pct = Math.round(((currentQuestionIndex) / maxQuestions) * 100);
             document.getElementById('percentage-display').innerText = `${pct}%`;
             document.getElementById('sidebar-progress').style.width = `${pct}%`;
-            document.getElementById('progress-detail').innerText = `${currentQuestionIndex + 1} / ${maxQuestions}`;
-        }
-
-        function resetButtonStyle(btnId) {
-            const btn = document.getElementById(btnId);
-            btn.classList.remove('ring-4', 'ring-indigo-200', 'bg-indigo-50', 'border-indigo-500', 'ring-pink-200', 'bg-pink-50', 'border-pink-500');
-            btn.classList.add('border-slate-100');
-        }
-
-        function selectOption(choice) {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            const q = questions[currentQuestionIndex];
-            const type = choice === 'A' ? q.optionA.type : q.optionB.type;
-            userAnswers[currentQuestionIndex] = type;
-            const btnId = choice === 'A' ? 'btn-option-a' : 'btn-option-b';
-            const btn = document.getElementById(btnId);
-            const colorClass = choice === 'A' ? ['ring-4', 'ring-indigo-200', 'bg-indigo-50', 'border-indigo-500'] : ['ring-4', 'ring-pink-200', 'bg-pink-50', 'border-pink-500'];
-            btn.classList.remove('border-slate-100');
-            btn.classList.add(...colorClass);
-
-            setTimeout(() => {
-                if (currentQuestionIndex < maxQuestions - 1) {
-                    questionContainer.classList.remove('slide-in');
-                    questionContainer.classList.add('slide-out');
-                    setTimeout(() => {
-                        currentQuestionIndex++;
-                        loadQuestion();
-                    }, 300);
-                } else {
-                    startAnalysis();
-                }
-            }, 350);
+            // 顶部进度条
+            document.getElementById('top-progress-bar').style.width = `${pct}%`;
         }
 
         function startAnalysis() {
-            quizScreen.classList.add('hidden');
-            loadingScreen.classList.remove('hidden');
-            loadingScreen.classList.add('flex');
-            document.getElementById('percentage-display').innerText = `100%`;
-            document.getElementById('sidebar-progress').style.width = `100%`;
-
-            const texts = ["正在构建多维认知模型...", "解析荣格八维功能...", "匹配 2025 职业数据库...", "生成全息性格画像..."];
-            const loadingText = document.getElementById('loading-text');
-            let step = 0;
+            screens.quiz.classList.add('hidden');
+            screens.loading.classList.remove('hidden');
+            screens.loading.classList.add('flex');
+            
+            let pct = 0;
+            const pctEl = document.getElementById('loading-percent');
+            const textEl = document.getElementById('loading-text');
+            const phases = ["正在连接神经网络...", "解码认知堆栈...", "合成人格矩阵..."];
+            
             const interval = setInterval(() => {
-                if(step < texts.length) {
-                    loadingText.innerText = texts[step];
-                    step++;
-                } else {
+                pct += Math.floor(Math.random() * 5) + 1;
+                if (pct > 100) pct = 100;
+                pctEl.innerText = `${pct}%`;
+                
+                // 阶段性文字变化
+                if(pct < 30) textEl.innerText = phases[0];
+                else if(pct < 70) textEl.innerText = phases[1];
+                else textEl.innerText = phases[2];
+
+                if (pct === 100) {
                     clearInterval(interval);
-                    loadingScreen.classList.add('hidden');
-                    loadingScreen.classList.remove('flex');
-                    finishQuiz();
+                    setTimeout(finishQuiz, 500);
                 }
-            }, 800);
+            }, 50);
         }
 
         function finishQuiz() {
-            resultScreen.classList.remove('hidden');
-            let finalScores = { "E": 0, "I": 0, "S": 0, "N": 0, "T": 0, "F": 0, "J": 0, "P": 0 };
-            userAnswers.forEach(type => { if (finalScores[type] !== undefined) finalScores[type]++; });
-
+            screens.loading.classList.add('hidden');
+            screens.loading.classList.remove('flex');
+            screens.result.classList.remove('hidden');
+            
+            // 简单计算逻辑
+            const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            userAnswers.forEach(a => scores[a] = (scores[a] || 0) + 1);
+            
+            // 确定类型
             let type = "";
-            type += (finalScores.E >= finalScores.I) ? "E" : "I";
-            type += (finalScores.S >= finalScores.N) ? "S" : "N";
-            type += (finalScores.T >= finalScores.F) ? "T" : "F";
-            type += (finalScores.J >= finalScores.P) ? "J" : "P";
+            type += scores.E >= scores.I ? "E" : "I";
+            type += scores.S >= scores.N ? "S" : "N";
+            type += scores.T >= scores.F ? "T" : "F";
+            type += scores.J >= scores.P ? "J" : "P";
 
-            if (!personalityData[type]) type = "INTJ";
-            const data = personalityData[type];
+            const data = personalityData[type] || personalityData["INTJ"]; 
 
+            // 填充数据
             document.getElementById('result-type').innerText = type;
             document.getElementById('result-title').innerText = data.title;
+            document.getElementById('rarity-tag').innerText = data.rarity;
             document.getElementById('result-content').innerHTML = data.details;
-            if(data.rarity) document.getElementById('rarity-tag').innerText = data.rarity;
 
-            // 图片加载
-         // [核心修改] 背景图片加载逻辑
-            const bgImgEl = document.getElementById('result-bg-image');
+            // 填充维度条
+            const calcPct = (a, b) => { const total = a+b; return total===0 ? 50 : Math.round((a/total)*100); };
             
-            // 先隐藏，防止切换时闪烁
-            bgImgEl.style.opacity = '0';
-
-            if (data.imageUrl && data.imageUrl.trim() !== "") {
-                bgImgEl.src = data.imageUrl;
-                // 图片加载完毕后淡入 (设置透明度 0.25 左右，太高会影响文字)
-                bgImgEl.onload = function() {
-                    bgImgEl.style.opacity = '0.25';
-                };
-                // 如果加载失败，保持隐藏，仅显示渐变背景
-                bgImgEl.onerror = function() {
-                    bgImgEl.style.opacity = '0';
-                };
-            } else {
-                bgImgEl.style.opacity = '0';
-            }
-
-            const calcPct = (v1, v2) => {
-                const total = v1 + v2;
-                return total === 0 ? 50 : Math.round((v1 / total) * 100);
+            // 辅助函数：更新进度条和文字
+            const setBar = (id1, id2, val1, val2) => {
+                const p1 = calcPct(val1, val2);
+                const p2 = 100 - p1;
+                document.getElementById(`bar-${id1}`).style.width = `${p1}%`;
+                document.getElementById(`bar-${id2}`).style.width = `${p2}%`;
+                document.getElementById(`text-${id1}-val`).innerText = `${p1}%`;
+                document.getElementById(`text-${id2}-val`).innerText = `${p2}%`;
             };
-            const pctE = calcPct(finalScores.E, finalScores.I); const pctI = 100 - pctE;
-            const pctS = calcPct(finalScores.S, finalScores.N); const pctN = 100 - pctS;
-            const pctT = calcPct(finalScores.T, finalScores.F); const pctF = 100 - pctT;
-            const pctJ = calcPct(finalScores.J, finalScores.P); const pctP = 100 - pctJ;
 
-            const updateBar = (id, val) => {
-                setTimeout(() => document.getElementById(`bar-${id}`).style.width = `${val}%`, 200);
-                document.getElementById(`text-${id}`).innerText = `${val}%`;
-            };
-            updateBar('e', pctE); updateBar('i', pctI);
-            updateBar('s', pctS); updateBar('n', pctN);
-            updateBar('t', pctT); updateBar('f', pctF);
-            updateBar('j', pctJ); updateBar('p', pctP);
+            setBar('e', 'i', scores.E, scores.I);
+            setBar('s', 'n', scores.S, scores.N);
+            setBar('t', 'f', scores.T, scores.F);
+            setBar('j', 'p', scores.J, scores.P);
 
-            renderOctagonRadar(pctE, pctI, pctS, pctN, pctT, pctF, pctJ, pctP);
+            // 生成职业列表
+            const careerHTML = (data.careers || []).map(c => `
+                <div class="bg-white/5 p-3 rounded-lg border border-white/5 text-center hover:bg-white/10 transition-colors group">
+                    <div class="text-2xl font-bold text-neon-blue mb-1 group-hover:scale-110 transition-transform">${c.match}%</div>
+                    <div class="text-xs text-slate-300">${c.name}</div>
+                </div>
+            `).join('');
+            document.getElementById('career-list').innerHTML = careerHTML;
+
+            // 生成关系
+            const relHTML = `
+                <div class="flex items-center justify-between bg-white/5 p-3 rounded-lg">
+                    <span class="text-sm text-slate-300">灵魂伴侣</span>
+                    <span class="font-bold text-neon-purple font-mono">${data.relationships?.soulmate || '--'}</span>
+                </div>
+                 <div class="flex items-center justify-between bg-white/5 p-3 rounded-lg">
+                    <span class="text-sm text-slate-300">潜在冲突</span>
+                    <span class="font-bold text-slate-500 font-mono">${data.relationships?.conflict || '--'}</span>
+                </div>
+            `;
+            document.getElementById('relationship-content').innerHTML = relHTML;
+
+            // 渲染雷达图
+            renderRadar([scores.E, scores.S, scores.T, scores.J, scores.I, scores.N, scores.F, scores.P]);
         }
 
-        function renderOctagonRadar(e, i, s, n, t, f, j, p) {
+        function renderRadar(dataValues) {
             const ctx = document.getElementById('radarChart').getContext('2d');
-            const dataValues = [e, s, t, j, i, n, f, p];
-            if (window.myRadarChart) window.myRadarChart.destroy();
-            window.myRadarChart = new Chart(ctx, {
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['外向(E)', '实感(S)', '理智(T)', '判断(J)', '内向(I)', '直觉(N)', '情感(F)', '感知(P)'],
+                    labels: ['E', 'S', 'T', 'J', 'I', 'N', 'F', 'P'],
                     datasets: [{
-                        label: '人格维度',
+                        label: 'Value',
                         data: dataValues,
-                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                        borderColor: '#ffffff',
+                        backgroundColor: 'rgba(0, 243, 255, 0.2)',
+                        borderColor: '#00f3ff',
                         borderWidth: 2,
-                        pointBackgroundColor: '#818cf8',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointRadius: 3,
+                        pointBackgroundColor: '#fff',
+                        pointRadius: 3
                     }]
                 },
                 options: {
                     scales: {
                         r: {
-                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: {
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                font: { size: 11, family: 'Arial', weight: 'bold' }
-                            },
-                            ticks: { display: false, max: 100, min: 0 }
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)', circular: true },
+                            pointLabels: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 10 } },
+                            ticks: { display: false }
                         }
                     },
                     plugins: { legend: { display: false } },
@@ -1868,15 +1921,22 @@
             });
         }
 
-        function downloadReport() { window.print(); }
-        function shareResult() {
-            const dummyLink = "https://mbti-2025.test/result/" + Math.random().toString(36).substring(7);
-            navigator.clipboard.writeText(dummyLink).then(() => showToast()).catch(err => alert("链接生成： " + dummyLink));
-        }
-        function showToast() {
-            const toast = document.getElementById("toast");
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        function goHome() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            screens.result.classList.add('hidden');
+            screens.quiz.classList.add('hidden');
+            screens.loading.classList.add('hidden');
+            
+            screens.start.classList.remove('hidden');
+            screens.start.classList.add('fade-in');
+            
+            document.getElementById('mode-indicator').style.opacity = '0';
+            document.getElementById('sidebar-stats').style.opacity = '0';
+            document.getElementById('sidebar-progress').style.width = '0%';
+            document.getElementById('percentage-display').innerText = '0%';
+            // 重置顶部进度条
+            document.getElementById('top-progress-bar').style.width = '0%';
         }
     </script>
 </body>
