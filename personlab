@@ -947,664 +947,665 @@
          * 图片配置: 请将 "" 替换为图片链接
          */
         const personalityData = {
-            "INTJ": {
-                title: "建筑师 (The Architect)",
-                imageUrl: "https://placehold.co/400x400/4f46e5/ffffff?text=INTJ",
-                rarity: "约 2%（极稀有）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-indigo-500 pl-4 bg-indigo-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 INTJ，你是顶级的战略思想家。你不仅拥有丰富的想象力，还具备将想法转化为现实的冷静决断力。你对知识有着无尽的渴望，总是质疑现状，寻找更优解。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>理性客观：</strong> 善于用逻辑抽丝剥茧，快速抓住问题本质。</li>
-                        <li><strong>长期规划：</strong> 喜欢从全局出发，制定清晰的中长期路线图。</li>
-                        <li><strong>独立自主：</strong> 不随波逐流，更愿意按照自己的标准行事。</li>
-                        <li><strong>高标准高要求：</strong> 对自己和项目质量都有近乎苛刻的追求。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>情绪表达克制：</strong> 习惯压抑情绪，容易被他人误解为“高冷”或“不近人情”。</li>
-                        <li><strong>不耐低效：</strong> 对低效流程与“无意义社交”非常敏感，容易表现出不耐烦。</li>
-                        <li><strong>完美主义：</strong> 有时会因为“还不够完美”而迟迟不愿落地执行。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>
-                        INTJ 适合在需要<strong>战略规划、独立思考、体系设计</strong>的岗位上发光发热，例如：
-                    </p>
-                    <ul>
-                        <li><strong>产品经理 / 解决方案架构师：</strong> 负责设计系统级方案与路线图。</li>
-                        <li><strong>科研 / 数据分析：</strong> 深入钻研问题，提出创新性模型与假设。</li>
-                        <li><strong>战略咨询 / 投资分析：</strong> 从宏观视角评估风险与机会。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>练习用更温和的方式表达批评，让“真相”也能被愉快地接收。</li>
-                        <li>适当降低对完美的执念，把“持续迭代”当作另一种形式的完美。</li>
-                        <li>刻意安排与他人的情感连接时间，让关系也成为你的长期资产。</li>
-                    </ul>
-                `
-            },
-
-            "INTP": {
-                title: "逻辑学家 (The Logician)",
-                imageUrl: "https://placehold.co/400x400/0ea5e9/ffffff?text=INTP",
-                rarity: "约 3%（稀有理性型）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 INTP，你是天生的思想探索者，喜欢拆解概念、构建模型、追问“为什么”。你不满足于表面答案，更在意体系是否自洽、逻辑是否严谨。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>抽象思维强：</strong> 擅长从复杂信息中提炼出本质规律与底层逻辑。</li>
-                        <li><strong>好奇心驱动：</strong> 对新知识、新理论保持高度兴趣，乐于自学钻研。</li>
-                        <li><strong>创意点子多：</strong> 能提出非传统、跳脱框架的问题解决方案。</li>
-                        <li><strong>客观冷静：</strong> 遇到问题时更倾向于“分析”，而不是“情绪化”。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>行动拖延：</strong> 想法很多，但容易卡在思考层面，缺少落地执行。</li>
-                        <li><strong>表达过于理性：</strong> 可能忽略他人感受，被视为“不合群”或“不接地气”。</li>
-                        <li><strong>兴趣游移：</strong> 热情来得快去得也快，长期专注和坚持有时是挑战。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>INTP 适合从事需要<strong>独立思考、理论构建、系统设计</strong>的领域：</p>
-                    <ul>
-                        <li><strong>程序开发 / 算法 / AI 研究：</strong> 把抽象逻辑变成可运行的系统。</li>
-                        <li><strong>科研 / 学术：</strong> 深挖一个问题，在细分领域做出原创贡献。</li>
-                        <li><strong>产品架构 / 技术顾问：</strong> 站在系统层面做技术决策。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>尝试给每个想法配一个“小实验”，让思考更快变成可验证行动。</li>
-                        <li>在沟通中多加一句：“我理解这对你来说可能感受是……” 来补足情感维度。</li>
-                        <li>为自己设定“阶段性专注主题”，避免因兴趣分散而错失长期积累。</li>
-                    </ul>
-                `
-            },
-
-            "ENTJ": {
-                title: "指挥官 (The Commander)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ENTJ",
-                rarity: "约 2%（强势领导型）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ENTJ，你天生具备领导与统筹能力，擅长在混乱中建立秩序，在不确定中找到方向。你果断、目标感极强，非常在意“效率”和“结果”。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>目标导向：</strong> 能快速设定清晰目标，并拆解为可执行步骤。</li>
-                        <li><strong>组织统筹能力强：</strong> 擅长调配资源、分配任务、推动项目进展。</li>
-                        <li><strong>抗压能力高：</strong> 面对压力与挑战时，反而会激发斗志。</li>
-                        <li><strong>决策果断：</strong> 不拖泥带水，敢于拍板与承担责任。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>控制感较强：</strong> 容易不自觉地“替别人做决定”，忽略对方主观感受。</li>
-                        <li><strong>耐心有限：</strong> 对“低效率”“犹豫不决”会相当敏感。</li>
-                        <li><strong>忽略情绪：</strong> 太重视结果，可能在无意中伤害他人感受。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ENTJ 拥有天然的<strong>管理、统筹、决策</strong>优势：</p>
-                    <ul>
-                        <li><strong>企业管理者 / 创业者：</strong> 搭团队、定战略、冲业绩。</li>
-                        <li><strong>咨询顾问 / 投资人：</strong> 用宏观视角评估项目和资源配置。</li>
-                        <li><strong>运营 / 项目负责人：</strong> 在复杂系统中保持整体效率。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>在推进目标前，先问一句：“你怎么看？” 给他人更多参与感。</li>
-                        <li>将“关心人”与“完成事”并列为两大 KPI，而不是只盯结果。</li>
-                        <li>允许团队成员用不同方式做事，结果达成即可，不必事事掌控细节。</li>
-                    </ul>
-                `
-            },
-
-            "ENTP": {
-                title: "辩论家 (The Debater)",
-                imageUrl: "https://placehold.co/400x400/22c55e/ffffff?text=ENTP",
-                rarity: "约 3%（创意辩思型）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-green-500 pl-4 bg-green-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ENTP，你是点子和观点的“旋风制造机”。你喜欢碰撞思想、挑战传统、提出新鲜的视角，用脑洞和逻辑让世界变得更有趣。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>创意爆棚：</strong> 总能想到别人没想到的可能性和方案。</li>
-                        <li><strong>表达能力强：</strong> 口才佳，善于辩论、说服与演讲。</li>
-                        <li><strong>适应性高：</strong> 面对变化从不慌乱，甚至享受“不确定”。</li>
-                        <li><strong>善于看到多种角度：</strong> 不轻易站队，更愿意探索问题的多面性。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>容易三分钟热度：</strong> 开头兴致高，后期维护和细节执行容易松懈。</li>
-                        <li><strong>辩论成瘾：</strong> 有时为“好玩”而争论，忽略他人情绪和边界。</li>
-                        <li><strong>难以长期聚焦：</strong> 太多新想法，导致项目收尾质量参差不齐。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ENTP 适合在需要<strong>创新、表达、解决复杂问题</strong>的环境中工作：</p>
-                    <ul>
-                        <li><strong>创意策划 / 品牌营销：</strong> 用创意给产品和内容注入灵魂。</li>
-                        <li><strong>创业 / 商业模式设计：</strong> 探索新模式、新产品、新机会。</li>
-                        <li><strong>咨询 / 公共演讲 / 自媒体：</strong> 用观点和表达影响他人。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>给自己的点子配上“执行搭档”，一起把创意落地。</li>
-                        <li>学会分辨“有价值的争论”和“纯情绪消耗式争论”。</li>
-                        <li>为自己设定“完成成本”，有始有终比永远在路上更有力量。</li>
-                    </ul>
-                `
-            },
-
-            "INFJ": {
-                title: "提倡者 (The Advocate)",
-                imageUrl: "https://placehold.co/400x400/a855f7/ffffff?text=INFJ",
-                rarity: "约 1.5%（理想主义稀有人格）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-purple-500 pl-4 bg-purple-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 INFJ，你兼具深度洞察力与强烈价值感，是典型的“理想主义现实派”。你关注他人的内在需求，希望用自己的力量推动一点真实而温柔的改变。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>共情力强：</strong> 敏锐感知他人情绪与未说出口的真正需求。</li>
-                        <li><strong>价值驱动：</strong> 做事不仅看结果，更在乎是否符合内心信念。</li>
-                        <li><strong>洞察深刻：</strong> 能看到表象背后的动机、模式与趋势。</li>
-                        <li><strong>长期投入：</strong> 一旦认定有意义，会非常投入且忠诚。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>情绪内耗：</strong> 过度关照他人感受，却忽视自己的消耗和界限。</li>
-                        <li><strong>完美理想主义：</strong> 很难接受“现实不完美”，容易产生失落感。</li>
-                        <li><strong>难以拒绝：</strong> 不愿让别人失望，导致自己压力过大。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>INFJ 适合在需要<strong>深度陪伴、引导、价值塑造</strong>的场景中工作：</p>
-                    <ul>
-                        <li><strong>心理咨询 / 教育 / 教练：</strong> 陪伴他人成长，看到潜能被激发。</li>
-                        <li><strong>公益 / 社会创新：</strong> 用系统化方式改变群体困境。</li>
-                        <li><strong>写作 / 内容创作：</strong> 用文字和故事传递价值。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>记住：照顾好自己，也是对他人长期负责的一种方式。</li>
-                        <li>区分“理想中的人/世界”和“现实中的人/世界”，给不完美留空间。</li>
-                        <li>学会说“不”，你的时间与精力同样珍贵。</li>
-                    </ul>
-                `
-            },
-
-            "INFP": {
-                title: "调停者 (The Mediator)",
-                imageUrl: "https://placehold.co/400x400/22c55e/ffffff?text=INFP",
-                rarity: "约 4%（温柔理想派）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 INFP，你内心拥有一套非常清晰而细腻的价值体系。你温柔、真诚，又带着一点点“理想主义的倔强”，希望世界和人都能更善良、更真实一些。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>真诚善良：</strong> 重视情感与真心，不愿敷衍和表面应付。</li>
-                        <li><strong>创造力十足：</strong> 富有想象力，擅长用文字、音乐、图像表达内心世界。</li>
-                        <li><strong>包容理解：</strong> 不轻易评判他人，能看到每个人身上的亮点。</li>
-                        <li><strong>价值感驱动：</strong> 为“自己认同的事情”可以投入巨大热情。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>逃避冲突：</strong> 不喜欢正面冲突，可能选择沉默或退缩。</li>
-                        <li><strong>行动力不足：</strong> 很多美好设想停留在想象层面。</li>
-                        <li><strong>自我怀疑：</strong> 对自己的价值过于敏感，容易陷入情绪波动。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>INFP 在需要<strong>创意、表达、助人、价值感</strong>的工作中更容易发光：</p>
-                    <ul>
-                        <li><strong>写作 / 插画 / 音乐 / 设计：</strong> 把内心故事转化为作品。</li>
-                        <li><strong>教育 / 心理 / 社会工作：</strong> 陪伴与支持他人。</li>
-                        <li><strong>文化创意 / 品牌故事：</strong> 为品牌注入情感与意义。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>给自己的理想设定“小步骤”，一点点往前走也很有价值。</li>
-                        <li>面对冲突时，尝试用“表达感受”代替“完全退缩”。</li>
-                        <li>接纳“自己也是普通人”，不必时时完美善良，允许适度的自私与边界。</li>
-                    </ul>
-                `
-            },
-
-            "ENFJ": {
-                title: "主人公 (The Protagonist)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ENFJ",
-                rarity: "约 2.5%（温暖领导者）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-500 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ENFJ，你像一块“情感磁场”，能够自然地凝聚人心、激励他人。你关注群体氛围与每个人的成长，希望团队一起变得更好。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>共情与洞察：</strong> 善于读懂别人的需求与潜能。</li>
-                        <li><strong>鼓舞型领导：</strong> 喜欢用鼓励和支持的方式带领团队。</li>
-                        <li><strong>组织协调能力强：</strong> 能平衡任务、关系、氛围等多个维度。</li>
-                        <li><strong>责任感重：</strong> 对自己答应的事几乎“有求必应”，尽力做到最好。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>容易过度付出：</strong> 为他人考虑过多，却忽略自己的需求。</li>
-                        <li><strong>难以拒绝：</strong> 被当成“万能好人”，但内心其实很累。</li>
-                        <li><strong>对评价敏感：</strong> 容易被“不被理解”深深刺痛。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ENFJ 适合在需要<strong>协调、带领、激励、教育</strong>的岗位：</p>
-                    <ul>
-                        <li><strong>团队管理 / HR / 培训：</strong> 关注人的发展与团队氛围。</li>
-                        <li><strong>教育 / 心理 / 教练：</strong> 陪伴他人实现潜能。</li>
-                        <li><strong>公关 / 活动策划：</strong> 处理关系、搭建连接。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>学会把“照顾自己”排进日程，这不是自私，是续航。</li>
-                        <li>不是所有人都准备好被你“拯救”，有些课题需要对方自己完成。</li>
-                        <li>分清“别人的情绪”与“自己的责任”，不要为所有人的情绪买单。</li>
-                    </ul>
-                `
-            },
-
-            "ENFP": {
-                title: "竞选者 (The Campaigner)",
-                imageUrl: "https://placehold.co/400x400/22c55e/ffffff?text=ENFP",
-                rarity: "约 8%（高能量创意者）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ENFP，你像一团会发光的火焰，自带感染力和灵感。你热爱自由、多样性与新体验，不愿被僵化规则束缚。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>热情有感染力：</strong> 很容易调动气氛，让周围人觉得“活着很好玩”。</li>
-                        <li><strong>创意与灵感丰富：</strong> 能为平凡的事物找到独特角度。</li>
-                        <li><strong>重视人与故事：</strong> 对每个人的经历和内心都真诚好奇。</li>
-                        <li><strong>适应新环境能力强：</strong> 不惧新挑战，乐于尝试新领域。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>难以坚持：</strong> 起步超快，但中后期的细活会消耗你的耐心。</li>
-                        <li><strong>情绪波动大：</strong> 对关系和氛围极其敏感，容易被影响心情。</li>
-                        <li><strong>时间管理挑战：</strong> 想做的事太多，容易“手忙心乱”。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ENFP 在需要<strong>创意、人际互动、表达</strong>的场景中最具优势：</p>
-                    <ul>
-                        <li><strong>新媒体 / 内容创作 / 主播：</strong> 用表达和想象力链接观众。</li>
-                        <li><strong>品牌营销 / 活动策划：</strong> 把创意转化为体验感。</li>
-                        <li><strong>教育 / 咨询 / 辅导：</strong> 用热情和洞察鼓励他人成长。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>为项目设定“最低完成标准”，先完成，再完美。</li>
-                        <li>划分“情绪独处时间”，让自己有空间消化而不是爆发。</li>
-                        <li>学会筛选：不是每个机会都要去回应，专注于真正重要的少数。</li>
-                    </ul>
-                `
-            },
-
-            "ISTJ": {
-                title: "物流师 (The Logistician)",
-                imageUrl: "https://placehold.co/400x400/64748b/ffffff?text=ISTJ",
-                rarity: "约 11%（稳重实干派）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-slate-500 pl-4 bg-slate-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ISTJ，你踏实、可靠、重视责任和秩序。你更相信事实与经验，而不是空洞承诺，是典型的“说到做到型”人格。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>执行力强：</strong> 安排给你的任务，一般都会按时、按标准完成。</li>
-                        <li><strong>重视规则和秩序：</strong> 能保证系统的稳定运作。</li>
-                        <li><strong>务实严谨：</strong> 注重细节，不轻易放过错误和疏漏。</li>
-                        <li><strong>可靠可信赖：</strong> 身边人常把你视为“定海神针”。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>对变化不适：</strong> 突然的变动会让你感到压力。</li>
-                        <li><strong>不爱表达情绪：</strong> 习惯用行动表达在意，言语层面略显冷淡。</li>
-                        <li><strong>对“想太多的人”缺乏耐心：</strong> 更偏爱直接简单的沟通方式。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ISTJ 适合在<strong>结构清晰、流程稳定</strong>的环境中工作：</p>
-                    <ul>
-                        <li><strong>财务 / 审计 / 行政：</strong> 需要严谨和规则意识。</li>
-                        <li><strong>工程 / 质检 / 运维：</strong> 保证系统稳定安全运行。</li>
-                        <li><strong>公务体系 / 法律相关：</strong> 执行制度、维护秩序。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>在面对变化时，多问一句“这个改变可能带来什么好处？”。</li>
-                        <li>适当用语言表达关心，让身边的人更容易感受到你的在意。</li>
-                        <li>给自己留一点“试错空间”，不必凡事一次到位。</li>
-                    </ul>
-                `
-            },
-
-            "ISFJ": {
-                title: "守卫者 (The Defender)",
-                imageUrl: "https://placehold.co/400x400/0ea5e9/ffffff?text=ISFJ",
-                rarity: "约 9%（温柔守护型）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ISFJ，你温和、细心、富有责任感，常常在悄无声息中照顾着他人。你不张扬，却是很多人生活中稳稳的“安全感来源”。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>细致体贴：</strong> 能注意到别人忽略的小细节，并默默照顾到。</li>
-                        <li><strong>可靠踏实：</strong> 答应别人的事，会认真放在心上。</li>
-                        <li><strong>记忆力好：</strong> 对重要的人和事有深刻而长期的记忆。</li>
-                        <li><strong>责任感强：</strong> 感到自己“有义务”把事情做好。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>不擅拒绝：</strong> 容易被动承担过多任务，压垮自己。</li>
-                        <li><strong>情绪压抑：</strong> 把不开心藏心里，很少主动倾诉。</li>
-                        <li><strong>害怕给别人添麻烦：</strong> 反而让自己承受更多负担。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ISFJ 适合在需要<strong>耐心、细致、关怀</strong>的领域：</p>
-                    <ul>
-                        <li><strong>护理 / 医疗 / 教育：</strong> 长期陪伴与照顾他人。</li>
-                        <li><strong>行政 / 客服 / 后勤：</strong> 保障系统顺畅运作。</li>
-                        <li><strong>文案 / 档案管理：</strong> 细致整理信息与资料。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>学会直接表达“我需要帮助”，你也值得被照顾。</li>
-                        <li>为自己设定“付出边界”，适当拒绝不是自私。</li>
-                        <li>把关注的一部分从“别人怎样”转回“我现在的感受”。</li>
-                    </ul>
-                `
-            },
-
-            "ESTJ": {
-                title: "总经理 (The Executive)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ESTJ",
-                rarity: "约 8%（现实管理者）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-600 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ESTJ，你实干、直接、讲原则，擅长把事情组织起来并高效推进。你重视传统与规则，是典型的“执行与管理中坚力量”。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>组织能力强：</strong> 能清晰分工、设定标准、控制进度。</li>
-                        <li><strong>现实理性：</strong> 更关注“现在能做什么”而不是空想。</li>
-                        <li><strong>态度干脆：</strong> 表达直接，不绕弯子。</li>
-                        <li><strong>守信守规：</strong> 重视承诺和制度，值得信赖。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>容易让人有压迫感：</strong> 直接的表达方式可能被视为“太强势”。</li>
-                        <li><strong>对不同想法不够耐心：</strong> 容易认为“绕圈子”的人低效。</li>
-                        <li><strong>情感表达较少：</strong> 更多用“做事”而不是“说话”来表达关心。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ESTJ 适合在强调<strong>组织管理、执行落地</strong>的岗位：</p>
-                    <ul>
-                        <li><strong>部门管理者 / 项目经理：</strong> 保证团队按节奏推进。</li>
-                        <li><strong>运营 / 行政管理：</strong> 维护制度与流程。</li>
-                        <li><strong>传统行业负责人：</strong> 在稳定框架内追求优化与增长。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>在给出评价前，多问一句“你是怎么考虑的？”。</li>
-                        <li>区分“无效低效”与“风格不同”，给多元方式一点空间。</li>
-                        <li>偶尔放慢节奏，和身边人聊聊“感受”，而不仅是“事情”。</li>
-                    </ul>
-                `
-            },
-
-            "ESFJ": {
-                title: "执政官 (The Consul)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ESFJ",
-                rarity: "约 9%（社交组织者）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-400 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ESFJ，你擅长照顾关系和氛围，是很多社交场合的“润滑剂”。你重视和谐、礼貌与彼此的体谅。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>社交感知敏锐：</strong> 能快速感知氛围，主动调整自己的状态。</li>
-                        <li><strong>乐于付出：</strong> 喜欢为他人提供帮助与支持。</li>
-                        <li><strong>组织活动能力强：</strong> 安排聚会、活动、团建都不在话下。</li>
-                        <li><strong>重视群体认同：</strong> 善于维护团队和谐。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>过度在意他人评价：</strong> 容易因为一点冷淡或否定而情绪受挫。</li>
-                        <li><strong>难以放过自己：</strong> 总觉得“是不是我哪里做得不够好？”。</li>
-                        <li><strong>忽略内在需求：</strong> 把注意力都放在外界和别人身上。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ESFJ 在需要<strong>人际互动、服务与协调</strong>的岗位中优势明显：</p>
-                    <ul>
-                        <li><strong>客服 / 销售 / 公关：</strong> 用真诚与热情连接客户。</li>
-                        <li><strong>行政 / 教务 / 班主任：</strong> 管理日常事务与人际关系。</li>
-                        <li><strong>活动策划 / 社区运营：</strong> 维护社群氛围和参与度。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>练习问自己：“我现在真正想要的是什么？”。</li>
-                        <li>并不是所有人的情绪都与你有关，适当“去人格化”他人的反应。</li>
-                        <li>给自己也安排“被照顾”的时间，而不是永远扮演照顾者。</li>
-                    </ul>
-                `
-            },
-
-            "ISTP": {
-                title: "鉴赏家 (The Virtuoso)",
-                imageUrl: "https://placehold.co/400x400/22c55e/ffffff?text=ISTP",
-                rarity: "约 5%（冷静行动派）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-600 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ISTP，你冷静、好奇、动手能力强，喜欢直接与真实世界打交道。你习惯自己摸索，用实践检验一切理论。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>动手能力极佳：</strong> 喜欢拆解、修理、改造各种东西。</li>
-                        <li><strong>临危不乱：</strong> 在紧急状况下保持冷静和实用主义思维。</li>
-                        <li><strong>独立自主：</strong> 不喜欢被束缚，擅长自己解决问题。</li>
-                        <li><strong>适应环境：</strong> 对新情况调整速度快，行动灵活。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>不爱解释：</strong> 更倾向用行动而不是语言沟通，容易被误解。</li>
-                        <li><strong>情感表达克制：</strong> 内心在意，但嘴上不说。</li>
-                        <li><strong>规划感较弱：</strong> 更看重当下体验，长期规划容易被忽略。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ISTP 适合在需要<strong>实操、技术、快速反应</strong>的领域：</p>
-                    <ul>
-                        <li><strong>工程师 / 技术维护 / 机械相关：</strong> 与设备、系统打交道。</li>
-                        <li><strong>应急类岗位：</strong> 如急救、消防、现场处理。</li>
-                        <li><strong>户外 / 极限 / 探险类工作：</strong> 将行动力发挥到极致。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>适当把“脑子里已经想好的步骤”说出来，能减少很多误会。</li>
-                        <li>为自己设计“简单版长期目标”，不要完全被当下牵着走。</li>
-                        <li>当身边人需要安慰时，除了行动，也可以加一句“我在”。</li>
-                    </ul>
-                `
-            },
-
-            "ISFP": {
-                title: "探险家 (The Adventurer)",
-                imageUrl: "https://placehold.co/400x400/0ea5e9/ffffff?text=ISFP",
-                rarity: "约 6%（安静体验者）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-400 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ISFP，你安静却不无趣，敏感却不矫情。你重视当下的感受与体验，喜欢用自己的方式观察世界、创造美感。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>审美与感受力强：</strong> 对色彩、氛围、情绪都很敏锐。</li>
-                        <li><strong>温柔而真实：</strong> 不喜欢表演，更愿意保持真诚。</li>
-                        <li><strong>尊重他人空间：</strong> 很少强迫别人按自己的方式行事。</li>
-                        <li><strong>灵活适应环境：</strong> 在舒适范围内愿意尝试新体验。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>难以表达需求：</strong> 经常把“没关系”挂嘴边，其实心里在意。</li>
-                        <li><strong>逃避不愉快：</strong> 遇到冲突会选择回避而不是正面解决。</li>
-                        <li><strong>缺乏长期规划：</strong> 更专注当下，未来容易“走一步看一步”。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ISFP 适合在<strong>需要审美、手作、氛围感</strong>的岗位：</p>
-                    <ul>
-                        <li><strong>设计 / 摄影 / 手工艺：</strong> 用作品表达内心感受。</li>
-                        <li><strong>美容 / 形象设计 / 空间布置：</strong> 打造舒适环境。</li>
-                        <li><strong>宠物 / 自然 / 艺术相关行业：</strong> 结合感受与温柔。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>尝试把“我喜欢/不喜欢什么”明确说出来，而不是全部迎合。</li>
-                        <li>适度提前规划一些关键节点，减轻未来焦虑。</li>
-                        <li>允许自己在关系中“占一点位置”，而不是只当陪衬。</li>
-                    </ul>
-                `
-            },
-
-            "ESTP": {
-                title: "企业家 (The Entrepreneur)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ESTP",
-                rarity: "约 4%（高能行动派）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ESTP，你喜欢刺激、变化与真实挑战。你不爱纸上谈兵，更愿意“说走就走”“说干就干”。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>行动力爆棚：</strong> 想到就能马上去做。</li>
-                        <li><strong>临场应变强：</strong> 面对突发情况反应敏捷。</li>
-                        <li><strong>社交灵活：</strong> 容易与不同类型的人打成一片。</li>
-                        <li><strong>务实直率：</strong> 不喜欢拐弯抹角，偏爱直接沟通。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>冲动决策：</strong> 有时来不及考虑长期后果。</li>
-                        <li><strong>对规则不耐烦：</strong> 觉得繁琐流程浪费时间。</li>
-                        <li><strong>难以专注长期项目：</strong> 持续重复的工作会让你很快厌倦。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ESTP 适合在需要<strong>行动、谈判、现场把控</strong>的岗位：</p>
-                    <ul>
-                        <li><strong>销售 / 商务拓展：</strong> 用反应力与说服力拿下机会。</li>
-                        <li><strong>创业 / 实体生意：</strong> 直接与市场打交道。</li>
-                        <li><strong>体育 / 户外 / 活动执行：</strong> 在行动中获得能量。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>在“马上行动”前，多问自己一次：“最坏的结果是什么？我能承受吗？”。</li>
-                        <li>给自己配备一个“规划型伙伴”，互补优势。</li>
-                        <li>学习从经历中总结，而不是只追求下一个刺激。</li>
-                    </ul>
-                `
-            },
-
-            "ESFP": {
-                title: "表演者 (The Entertainer)",
-                imageUrl: "https://placehold.co/400x400/f97316/ffffff?text=ESFP",
-                rarity: "约 7%（气氛担当）",
-                details: `
-                    <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-pink-500 pl-4 bg-pink-50 py-3 pr-3 rounded-r-lg">
-                        <strong>综述：</strong> 作为 ESFP，你是生活的体验家和气氛制造者。你热爱快乐、享受当下，也渴望把这种快乐分享给身边的人。
-                    </p>
-
-                    <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
-                    <ul>
-                        <li><strong>社交魅力强：</strong> 很容易让别人感到放松和开心。</li>
-                        <li><strong>感受力丰富：</strong> 对美、氛围、体验十分敏感。</li>
-                        <li><strong>乐观开朗：</strong> 通常能从困难中看到希望的一面。</li>
-                        <li><strong>行动派：</strong> 想到什么体验，马上就去尝试。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
-                    <ul>
-                        <li><strong>容易回避沉重话题：</strong> 不愿面对负面情绪和深度矛盾。</li>
-                        <li><strong>消费和时间管理挑战：</strong> 为了当下快乐，可能忽略长期成本。</li>
-                        <li><strong>害怕被冷落：</strong> 对“被忽视”的感受非常敏感。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
-                    <p>ESFP 适合在需要<strong>现场感、审美、人与人互动</strong>的工作：</p>
-                    <ul>
-                        <li><strong>主持 / 表演 / 娱乐行业：</strong> 站在舞台或镜头前发光。</li>
-                        <li><strong>时尚 / 美妆 / 形象设计：</strong> 把美学和体验结合。</li>
-                        <li><strong>旅游 / 活动 / 服务业：</strong> 让他人的体验变得更愉快。</li>
-                    </ul>
-
-                    <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
-                    <ul>
-                        <li>给自己设定简单的储蓄与规划规则，让未来的自己也感谢现在的你。</li>
-                        <li>允许自己偶尔认真面对“不开心”的部分，而不是全部转移话题。</li>
-                        <li>记住：即使不逗笑别人，你本身也值得被喜欢。</li>
-                    </ul>
-                `
-            }
-        };
+    "INTJ": {
+        title: "建筑师 (The Architect)",
+        // 这里的链接指向你的GitHub仓库，假设文件名为小写的 intj
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/intj", 
+        rarity: "约 2%（极稀有）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-indigo-500 pl-4 bg-indigo-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 INTJ，你是顶级的战略思想家。你不仅拥有丰富的想象力，还具备将想法转化为现实的冷静决断力。你对知识有着无尽的渴望，总是质疑现状，寻找更优解。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>理性客观：</strong> 善于用逻辑抽丝剥茧，快速抓住问题本质。</li>
+                <li><strong>长期规划：</strong> 喜欢从全局出发，制定清晰的中长期路线图。</li>
+                <li><strong>独立自主：</strong> 不随波逐流，更愿意按照自己的标准行事。</li>
+                <li><strong>高标准高要求：</strong> 对自己和项目质量都有近乎苛刻的追求。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>情绪表达克制：</strong> 习惯压抑情绪，容易被他人误解为“高冷”或“不近人情”。</li>
+                <li><strong>不耐低效：</strong> 对低效流程与“无意义社交”非常敏感，容易表现出不耐烦。</li>
+                <li><strong>完美主义：</strong> 有时会因为“还不够完美”而迟迟不愿落地执行。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>
+                INTJ 适合在需要<strong>战略规划、独立思考、体系设计</strong>的岗位上发光发热，例如：
+            </p>
+            <ul>
+                <li><strong>产品经理 / 解决方案架构师：</strong> 负责设计系统级方案与路线图。</li>
+                <li><strong>科研 / 数据分析：</strong> 深入钻研问题，提出创新性模型与假设。</li>
+                <li><strong>战略咨询 / 投资分析：</strong> 从宏观视角评估风险与机会。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>练习用更温和的方式表达批评，让“真相”也能被愉快地接收。</li>
+                <li>适当降低对完美的执念，把“持续迭代”当作另一种形式的完美。</li>
+                <li>刻意安排与他人的情感连接时间，让关系也成为你的长期资产。</li>
+            </ul>
+        `
+    },
+
+    "INTP": {
+        title: "逻辑学家 (The Logician)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/intp",
+        rarity: "约 3%（稀有理性型）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 INTP，你是天生的思想探索者，喜欢拆解概念、构建模型、追问“为什么”。你不满足于表面答案，更在意体系是否自洽、逻辑是否严谨。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>抽象思维强：</strong> 擅长从复杂信息中提炼出本质规律与底层逻辑。</li>
+                <li><strong>好奇心驱动：</strong> 对新知识、新理论保持高度兴趣，乐于自学钻研。</li>
+                <li><strong>创意点子多：</strong> 能提出非传统、跳脱框架的问题解决方案。</li>
+                <li><strong>客观冷静：</strong> 遇到问题时更倾向于“分析”，而不是“情绪化”。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>行动拖延：</strong> 想法很多，但容易卡在思考层面，缺少落地执行。</li>
+                <li><strong>表达过于理性：</strong> 可能忽略他人感受，被视为“不合群”或“不接地气”。</li>
+                <li><strong>兴趣游移：</strong> 热情来得快去得也快，长期专注和坚持有时是挑战。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>INTP 适合从事需要<strong>独立思考、理论构建、系统设计</strong>的领域：</p>
+            <ul>
+                <li><strong>程序开发 / 算法 / AI 研究：</strong> 把抽象逻辑变成可运行的系统。</li>
+                <li><strong>科研 / 学术：</strong> 深挖一个问题，在细分领域做出原创贡献。</li>
+                <li><strong>产品架构 / 技术顾问：</strong> 站在系统层面做技术决策。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>尝试给每个想法配一个“小实验”，让思考更快变成可验证行动。</li>
+                <li>在沟通中多加一句：“我理解这对你来说可能感受是……” 来补足情感维度。</li>
+                <li>为自己设定“阶段性专注主题”，避免因兴趣分散而错失长期积累。</li>
+            </ul>
+        `
+    },
+
+    "ENTJ": {
+        title: "指挥官 (The Commander)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/entj",
+        rarity: "约 2%（强势领导型）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ENTJ，你天生具备领导与统筹能力，擅长在混乱中建立秩序，在不确定中找到方向。你果断、目标感极强，非常在意“效率”和“结果”。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>目标导向：</strong> 能快速设定清晰目标，并拆解为可执行步骤。</li>
+                <li><strong>组织统筹能力强：</strong> 擅长调配资源、分配任务、推动项目进展。</li>
+                <li><strong>抗压能力高：</strong> 面对压力与挑战时，反而会激发斗志。</li>
+                <li><strong>决策果断：</strong> 不拖泥带水，敢于拍板与承担责任。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>控制感较强：</strong> 容易不自觉地“替别人做决定”，忽略对方主观感受。</li>
+                <li><strong>耐心有限：</strong> 对“低效率”“犹豫不决”会相当敏感。</li>
+                <li><strong>忽略情绪：</strong> 太重视结果，可能在无意中伤害他人感受。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ENTJ 拥有天然的<strong>管理、统筹、决策</strong>优势：</p>
+            <ul>
+                <li><strong>企业管理者 / 创业者：</strong> 搭团队、定战略、冲业绩。</li>
+                <li><strong>咨询顾问 / 投资人：</strong> 用宏观视角评估项目和资源配置。</li>
+                <li><strong>运营 / 项目负责人：</strong> 在复杂系统中保持整体效率。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>在推进目标前，先问一句：“你怎么看？” 给他人更多参与感。</li>
+                <li>将“关心人”与“完成事”并列为两大 KPI，而不是只盯结果。</li>
+                <li>允许团队成员用不同方式做事，结果达成即可，不必事事掌控细节。</li>
+            </ul>
+        `
+    },
+
+    "ENTP": {
+        title: "辩论家 (The Debater)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/entp",
+        rarity: "约 3%（创意辩思型）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-green-500 pl-4 bg-green-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ENTP，你是点子和观点的“旋风制造机”。你喜欢碰撞思想、挑战传统、提出新鲜的视角，用脑洞和逻辑让世界变得更有趣。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>创意爆棚：</strong> 总能想到别人没想到的可能性和方案。</li>
+                <li><strong>表达能力强：</strong> 口才佳，善于辩论、说服与演讲。</li>
+                <li><strong>适应性高：</strong> 面对变化从不慌乱，甚至享受“不确定”。</li>
+                <li><strong>善于看到多种角度：</strong> 不轻易站队，更愿意探索问题的多面性。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>容易三分钟热度：</strong> 开头兴致高，后期维护和细节执行容易松懈。</li>
+                <li><strong>辩论成瘾：</strong> 有时为“好玩”而争论，忽略他人情绪和边界。</li>
+                <li><strong>难以长期聚焦：</strong> 太多新想法，导致项目收尾质量参差不齐。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ENTP 适合在需要<strong>创新、表达、解决复杂问题</strong>的环境中工作：</p>
+            <ul>
+                <li><strong>创意策划 / 品牌营销：</strong> 用创意给产品和内容注入灵魂。</li>
+                <li><strong>创业 / 商业模式设计：</strong> 探索新模式、新产品、新机会。</li>
+                <li><strong>咨询 / 公共演讲 / 自媒体：</strong> 用观点和表达影响他人。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>给自己的点子配上“执行搭档”，一起把创意落地。</li>
+                <li>学会分辨“有价值的争论”和“纯情绪消耗式争论”。</li>
+                <li>为自己设定“完成成本”，有始有终比永远在路上更有力量。</li>
+            </ul>
+        `
+    },
+
+    "INFJ": {
+        title: "提倡者 (The Advocate)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/infj",
+        rarity: "约 1.5%（理想主义稀有人格）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-purple-500 pl-4 bg-purple-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 INFJ，你兼具深度洞察力与强烈价值感，是典型的“理想主义现实派”。你关注他人的内在需求，希望用自己的力量推动一点真实而温柔的改变。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>共情力强：</strong> 敏锐感知他人情绪与未说出口的真正需求。</li>
+                <li><strong>价值驱动：</strong> 做事不仅看结果，更在乎是否符合内心信念。</li>
+                <li><strong>洞察深刻：</strong> 能看到表象背后的动机、模式与趋势。</li>
+                <li><strong>长期投入：</strong> 一旦认定有意义，会非常投入且忠诚。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>情绪内耗：</strong> 过度关照他人感受，却忽视自己的消耗和界限。</li>
+                <li><strong>完美理想主义：</strong> 很难接受“现实不完美”，容易产生失落感。</li>
+                <li><strong>难以拒绝：</strong> 不愿让别人失望，导致自己压力过大。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>INFJ 适合在需要<strong>深度陪伴、引导、价值塑造</strong>的场景中工作：</p>
+            <ul>
+                <li><strong>心理咨询 / 教育 / 教练：</strong> 陪伴他人成长，看到潜能被激发。</li>
+                <li><strong>公益 / 社会创新：</strong> 用系统化方式改变群体困境。</li>
+                <li><strong>写作 / 内容创作：</strong> 用文字和故事传递价值。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>记住：照顾好自己，也是对他人长期负责的一种方式。</li>
+                <li>区分“理想中的人/世界”和“现实中的人/世界”，给不完美留空间。</li>
+                <li>学会说“不”，你的时间与精力同样珍贵。</li>
+            </ul>
+        `
+    },
+
+    "INFP": {
+        title: "调停者 (The Mediator)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/infp",
+        rarity: "约 4%（温柔理想派）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 INFP，你内心拥有一套非常清晰而细腻的价值体系。你温柔、真诚，又带着一点点“理想主义的倔强”，希望世界和人都能更善良、更真实一些。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>真诚善良：</strong> 重视情感与真心，不愿敷衍和表面应付。</li>
+                <li><strong>创造力十足：</strong> 富有想象力，擅长用文字、音乐、图像表达内心世界。</li>
+                <li><strong>包容理解：</strong> 不轻易评判他人，能看到每个人身上的亮点。</li>
+                <li><strong>价值感驱动：</strong> 为“自己认同的事情”可以投入巨大热情。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>逃避冲突：</strong> 不喜欢正面冲突，可能选择沉默或退缩。</li>
+                <li><strong>行动力不足：</strong> 很多美好设想停留在想象层面。</li>
+                <li><strong>自我怀疑：</strong> 对自己的价值过于敏感，容易陷入情绪波动。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>INFP 在需要<strong>创意、表达、助人、价值感</strong>的工作中更容易发光：</p>
+            <ul>
+                <li><strong>写作 / 插画 / 音乐 / 设计：</strong> 把内心故事转化为作品。</li>
+                <li><strong>教育 / 心理 / 社会工作：</strong> 陪伴与支持他人。</li>
+                <li><strong>文化创意 / 品牌故事：</strong> 为品牌注入情感与意义。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>给自己的理想设定“小步骤”，一点点往前走也很有价值。</li>
+                <li>面对冲突时，尝试用“表达感受”代替“完全退缩”。</li>
+                <li>接纳“自己也是普通人”，不必时时完美善良，允许适度的自私与边界。</li>
+            </ul>
+        `
+    },
+
+    "ENFJ": {
+        title: "主人公 (The Protagonist)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/enfj",
+        rarity: "约 2.5%（温暖领导者）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-500 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ENFJ，你像一块“情感磁场”，能够自然地凝聚人心、激励他人。你关注群体氛围与每个人的成长，希望团队一起变得更好。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>共情与洞察：</strong> 善于读懂别人的需求与潜能。</li>
+                <li><strong>鼓舞型领导：</strong> 喜欢用鼓励和支持的方式带领团队。</li>
+                <li><strong>组织协调能力强：</strong> 能平衡任务、关系、氛围等多个维度。</li>
+                <li><strong>责任感重：</strong> 对自己答应的事几乎“有求必应”，尽力做到最好。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>容易过度付出：</strong> 为他人考虑过多，却忽略自己的需求。</li>
+                <li><strong>难以拒绝：</strong> 被当成“万能好人”，但内心其实很累。</li>
+                <li><strong>对评价敏感：</strong> 容易被“不被理解”深深刺痛。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ENFJ 适合在需要<strong>协调、带领、激励、教育</strong>的岗位：</p>
+            <ul>
+                <li><strong>团队管理 / HR / 培训：</strong> 关注人的发展与团队氛围。</li>
+                <li><strong>教育 / 心理 / 教练：</strong> 陪伴他人实现潜能。</li>
+                <li><strong>公关 / 活动策划：</strong> 处理关系、搭建连接。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>学会把“照顾自己”排进日程，这不是自私，是续航。</li>
+                <li>不是所有人都准备好被你“拯救”，有些课题需要对方自己完成。</li>
+                <li>分清“别人的情绪”与“自己的责任”，不要为所有人的情绪买单。</li>
+            </ul>
+        `
+    },
+
+    "ENFP": {
+        title: "竞选者 (The Campaigner)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/enfp",
+        rarity: "约 8%（高能量创意者）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-500 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ENFP，你像一团会发光的火焰，自带感染力和灵感。你热爱自由、多样性与新体验，不愿被僵化规则束缚。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>热情有感染力：</strong> 很容易调动气氛，让周围人觉得“活着很好玩”。</li>
+                <li><strong>创意与灵感丰富：</strong> 能为平凡的事物找到独特角度。</li>
+                <li><strong>重视人与故事：</strong> 对每个人的经历和内心都真诚好奇。</li>
+                <li><strong>适应新环境能力强：</strong> 不惧新挑战，乐于尝试新领域。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>难以坚持：</strong> 起步超快，但中后期的细活会消耗你的耐心。</li>
+                <li><strong>情绪波动大：</strong> 对关系和氛围极其敏感，容易被影响心情。</li>
+                <li><strong>时间管理挑战：</strong> 想做的事太多，容易“手忙心乱”。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ENFP 在需要<strong>创意、人际互动、表达</strong>的场景中最具优势：</p>
+            <ul>
+                <li><strong>新媒体 / 内容创作 / 主播：</strong> 用表达和想象力链接观众。</li>
+                <li><strong>品牌营销 / 活动策划：</strong> 把创意转化为体验感。</li>
+                <li><strong>教育 / 咨询 / 辅导：</strong> 用热情和洞察鼓励他人成长。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>为项目设定“最低完成标准”，先完成，再完美。</li>
+                <li>划分“情绪独处时间”，让自己有空间消化而不是爆发。</li>
+                <li>学会筛选：不是每个机会都要去回应，专注于真正重要的少数。</li>
+            </ul>
+        `
+    },
+
+    "ISTJ": {
+        title: "物流师 (The Logistician)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/istj",
+        rarity: "约 11%（稳重实干派）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-slate-500 pl-4 bg-slate-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ISTJ，你踏实、可靠、重视责任和秩序。你更相信事实与经验，而不是空洞承诺，是典型的“说到做到型”人格。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>执行力强：</strong> 安排给你的任务，一般都会按时、按标准完成。</li>
+                <li><strong>重视规则和秩序：</strong> 能保证系统的稳定运作。</li>
+                <li><strong>务实严谨：</strong> 注重细节，不轻易放过错误和疏漏。</li>
+                <li><strong>可靠可信赖：</strong> 身边人常把你视为“定海神针”。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>对变化不适：</strong> 突然的变动会让你感到压力。</li>
+                <li><strong>不爱表达情绪：</strong> 习惯用行动表达在意，言语层面略显冷淡。</li>
+                <li><strong>对“想太多的人”缺乏耐心：</strong> 更偏爱直接简单的沟通方式。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ISTJ 适合在<strong>结构清晰、流程稳定</strong>的环境中工作：</p>
+            <ul>
+                <li><strong>财务 / 审计 / 行政：</strong> 需要严谨和规则意识。</li>
+                <li><strong>工程 / 质检 / 运维：</strong> 保证系统稳定安全运行。</li>
+                <li><strong>公务体系 / 法律相关：</strong> 执行制度、维护秩序。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>在面对变化时，多问一句“这个改变可能带来什么好处？”。</li>
+                <li>适当用语言表达关心，让身边的人更容易感受到你的在意。</li>
+                <li>给自己留一点“试错空间”，不必凡事一次到位。</li>
+            </ul>
+        `
+    },
+
+    "ISFJ": {
+        title: "守卫者 (The Defender)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/isfj",
+        rarity: "约 9%（温柔守护型）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-500 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ISFJ，你温和、细心、富有责任感，常常在悄无声息中照顾着他人。你不张扬，却是很多人生活中稳稳的“安全感来源”。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>细致体贴：</strong> 能注意到别人忽略的小细节，并默默照顾到。</li>
+                <li><strong>可靠踏实：</strong> 答应别人的事，会认真放在心上。</li>
+                <li><strong>记忆力好：</strong> 对重要的人和事有深刻而长期的记忆。</li>
+                <li><strong>责任感强：</strong> 感到自己“有义务”把事情做好。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>不擅拒绝：</strong> 容易被动承担过多任务，压垮自己。</li>
+                <li><strong>情绪压抑：</strong> 把不开心藏心里，很少主动倾诉。</li>
+                <li><strong>害怕给别人添麻烦：</strong> 反而让自己承受更多负担。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ISFJ 适合在需要<strong>耐心、细致、关怀</strong>的领域：</p>
+            <ul>
+                <li><strong>护理 / 医疗 / 教育：</strong> 长期陪伴与照顾他人。</li>
+                <li><strong>行政 / 客服 / 后勤：</strong> 保障系统顺畅运作。</li>
+                <li><strong>文案 / 档案管理：</strong> 细致整理信息与资料。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>学会直接表达“我需要帮助”，你也值得被照顾。</li>
+                <li>为自己设定“付出边界”，适当拒绝不是自私。</li>
+                <li>把关注的一部分从“别人怎样”转回“我现在的感受”。</li>
+            </ul>
+        `
+    },
+
+    "ESTJ": {
+        title: "总经理 (The Executive)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/estj",
+        rarity: "约 8%（现实管理者）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-amber-600 pl-4 bg-amber-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ESTJ，你实干、直接、讲原则，擅长把事情组织起来并高效推进。你重视传统与规则，是典型的“执行与管理中坚力量”。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>组织能力强：</strong> 能清晰分工、设定标准、控制进度。</li>
+                <li><strong>现实理性：</strong> 更关注“现在能做什么”而不是空想。</li>
+                <li><strong>态度干脆：</strong> 表达直接，不绕弯子。</li>
+                <li><strong>守信守规：</strong> 重视承诺和制度，值得信赖。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>容易让人有压迫感：</strong> 直接的表达方式可能被视为“太强势”。</li>
+                <li><strong>对不同想法不够耐心：</strong> 容易认为“绕圈子”的人低效。</li>
+                <li><strong>情感表达较少：</strong> 更多用“做事”而不是“说话”来表达关心。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ESTJ 适合在强调<strong>组织管理、执行落地</strong>的岗位：</p>
+            <ul>
+                <li><strong>部门管理者 / 项目经理：</strong> 保证团队按节奏推进。</li>
+                <li><strong>运营 / 行政管理：</strong> 维护制度与流程。</li>
+                <li><strong>传统行业负责人：</strong> 在稳定框架内追求优化与增长。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>在给出评价前，多问一句“你是怎么考虑的？”。</li>
+                <li>区分“无效低效”与“风格不同”，给多元方式一点空间。</li>
+                <li>偶尔放慢节奏，和身边人聊聊“感受”，而不仅是“事情”。</li>
+            </ul>
+        `
+    },
+
+    "ESFJ": {
+        title: "执政官 (The Consul)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/esfj",
+        rarity: "约 9%（社交组织者）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-400 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ESFJ，你擅长照顾关系和氛围，是很多社交场合的“润滑剂”。你重视和谐、礼貌与彼此的体谅。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>社交感知敏锐：</strong> 能快速感知氛围，主动调整自己的状态。</li>
+                <li><strong>乐于付出：</strong> 喜欢为他人提供帮助与支持。</li>
+                <li><strong>组织活动能力强：</strong> 安排聚会、活动、团建都不在话下。</li>
+                <li><strong>重视群体认同：</strong> 善于维护团队和谐。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>过度在意他人评价：</strong> 容易因为一点冷淡或否定而情绪受挫。</li>
+                <li><strong>难以放过自己：</strong> 总觉得“是不是我哪里做得不够好？”。</li>
+                <li><strong>忽略内在需求：</strong> 把注意力都放在外界和别人身上。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ESFJ 在需要<strong>人际互动、服务与协调</strong>的岗位中优势明显：</p>
+            <ul>
+                <li><strong>客服 / 销售 / 公关：</strong> 用真诚与热情连接客户。</li>
+                <li><strong>行政 / 教务 / 班主任：</strong> 管理日常事务与人际关系。</li>
+                <li><strong>活动策划 / 社区运营：</strong> 维护社群氛围和参与度。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>练习问自己：“我现在真正想要的是什么？”。</li>
+                <li>并不是所有人都情绪都与你有关，适当“去人格化”他人的反应。</li>
+                <li>给自己也安排“被照顾”的时间，而不是永远扮演照顾者。</li>
+            </ul>
+        `
+    },
+
+    "ISTP": {
+        title: "鉴赏家 (The Virtuoso)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/istp",
+        rarity: "约 5%（冷静行动派）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-emerald-600 pl-4 bg-emerald-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ISTP，你冷静、好奇、动手能力强，喜欢直接与真实世界打交道。你习惯自己摸索，用实践检验一切理论。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>动手能力极佳：</strong> 喜欢拆解、修理、改造各种东西。</li>
+                <li><strong>临危不乱：</strong> 在紧急状况下保持冷静和实用主义思维。</li>
+                <li><strong>独立自主：</strong> 不喜欢被束缚，擅长自己解决问题。</li>
+                <li><strong>适应环境：</strong> 对新情况调整速度快，行动灵活。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>不爱解释：</strong> 更倾向用行动而不是语言沟通，容易被误解。</li>
+                <li><strong>情感表达克制：</strong> 内心在意，但嘴上不说。</li>
+                <li><strong>规划感较弱：</strong> 更看重当下体验，长期规划容易被忽略。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ISTP 适合在需要<strong>实操、技术、快速反应</strong>的领域：</p>
+            <ul>
+                <li><strong>工程师 / 技术维护 / 机械相关：</strong> 与设备、系统打交道。</li>
+                <li><strong>应急类岗位：</strong> 如急救、消防、现场处理。</li>
+                <li><strong>户外 / 极限 / 探险类工作：</strong> 将行动力发挥到极致。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>适当把“脑子里已经想好的步骤”说出来，能减少很多误会。</li>
+                <li>为自己设计“简单版长期目标”，不要完全被当下牵着走。</li>
+                <li>当身边人需要安慰时，除了行动，也可以加一句“我在”。</li>
+            </ul>
+        `
+    },
+
+    "ISFP": {
+        title: "探险家 (The Adventurer)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/isfp",
+        rarity: "约 6%（安静体验者）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-sky-400 pl-4 bg-sky-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ISFP，你安静却不无趣，敏感却不矫情。你重视当下的感受与体验，喜欢用自己的方式观察世界、创造美感。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>审美与感受力强：</strong> 对色彩、氛围、情绪都很敏锐。</li>
+                <li><strong>温柔而真实：</strong> 不喜欢表演，更愿意保持真诚。</li>
+                <li><strong>尊重他人空间：</strong> 很少强迫别人按自己的方式行事。</li>
+                <li><strong>灵活适应环境：</strong> 在舒适范围内愿意尝试新体验。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>难以表达需求：</strong> 经常把“没关系”挂嘴边，其实心里在意。</li>
+                <li><strong>逃避不愉快：</strong> 遇到冲突会选择回避而不是正面解决。</li>
+                <li><strong>缺乏长期规划：</strong> 更专注当下，未来容易“走一步看一步”。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ISFP 适合在<strong>需要审美、手作、氛围感</strong>的岗位：</p>
+            <ul>
+                <li><strong>设计 / 摄影 / 手工艺：</strong> 用作品表达内心感受。</li>
+                <li><strong>美容 / 形象设计 / 空间布置：</strong> 打造舒适环境。</li>
+                <li><strong>宠物 / 自然 / 艺术相关行业：</strong> 结合感受与温柔。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>尝试把“我喜欢/不喜欢什么”明确说出来，而不是全部迎合。</li>
+                <li>适度提前规划一些关键节点，减轻未来焦虑。</li>
+                <li>允许自己在关系中“占一点位置”，而不是只当陪衬。</li>
+            </ul>
+        `
+    },
+
+    "ESTP": {
+        title: "企业家 (The Entrepreneur)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/estp",
+        rarity: "约 4%（高能行动派）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-orange-500 pl-4 bg-orange-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ESTP，你喜欢刺激、变化与真实挑战。你不爱纸上谈兵，更愿意“说走就走”“说干就干”。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>行动力爆棚：</strong> 想到就能马上去做。</li>
+                <li><strong>临场应变强：</strong> 面对突发情况反应敏捷。</li>
+                <li><strong>社交灵活：</strong> 容易与不同类型的人打成一片。</li>
+                <li><strong>务实直率：</strong> 不喜欢拐弯抹角，偏爱直接沟通。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>冲动决策：</strong> 有时来不及考虑长期后果。</li>
+                <li><strong>对规则不耐烦：</strong> 觉得繁琐流程浪费时间。</li>
+                <li><strong>难以专注长期项目：</strong> 持续重复的工作会让你很快厌倦。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ESTP 适合在需要<strong>行动、谈判、现场把控</strong>的岗位：</p>
+            <ul>
+                <li><strong>销售 / 商务拓展：</strong> 用反应力与说服力拿下机会。</li>
+                <li><strong>创业 / 实体生意：</strong> 直接与市场打交道。</li>
+                <li><strong>体育 / 户外 / 活动执行：</strong> 在行动中获得能量。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>在“马上行动”前，多问自己一次：“最坏的结果是什么？我能承受吗？”。</li>
+                <li>给自己配备一个“规划型伙伴”，互补优势。</li>
+                <li>学习从经历中总结，而不是只追求下一个刺激。</li>
+            </ul>
+        `
+    },
+
+    "ESFP": {
+        title: "表演者 (The Entertainer)",
+        imageUrl: "https://raw.githubusercontent.com/Jimmy-Xi/HumanCode/main/esfp",
+        rarity: "约 7%（气氛担当）",
+        details: `
+            <p class="text-lg font-medium text-slate-700 mb-6 border-l-4 border-pink-500 pl-4 bg-pink-50 py-3 pr-3 rounded-r-lg">
+                <strong>综述：</strong> 作为 ESFP，你是生活的体验家和气氛制造者。你热爱快乐、享受当下，也渴望把这种快乐分享给身边的人。
+            </p>
+
+            <h3><i class="fas fa-trophy"></i> 核心优势 (Strengths)</h3>
+            <ul>
+                <li><strong>社交魅力强：</strong> 很容易让别人感到放松和开心。</li>
+                <li><strong>感受力丰富：</strong> 对美、氛围、体验十分敏感。</li>
+                <li><strong>乐观开朗：</strong> 通常能从困难中看到希望的一面。</li>
+                <li><strong>行动派：</strong> 想到什么体验，马上就去尝试。</li>
+            </ul>
+
+            <h3><i class="fas fa-exclamation-circle"></i> 潜在盲点 (Challenges)</h3>
+            <ul>
+                <li><strong>容易回避沉重话题：</strong> 不愿面对负面情绪和深度矛盾。</li>
+                <li><strong>消费和时间管理挑战：</strong> 为了当下快乐，可能忽略长期成本。</li>
+                <li><strong>害怕被冷落：</strong> 对“被忽视”的感受非常敏感。</li>
+            </ul>
+
+            <h3><i class="fas fa-briefcase"></i> 职业优势领域 (Career)</h3>
+            <p>ESFP 适合在需要<strong>现场感、审美、人与人互动</strong>的工作：</p>
+            <ul>
+                <li><strong>主持 / 表演 / 娱乐行业：</strong> 站在舞台或镜头前发光。</li>
+                <li><strong>时尚 / 美妆 / 形象设计：</strong> 把美学和体验结合。</li>
+                <li><strong>旅游 / 活动 / 服务业：</strong> 让他人的体验变得更愉快。</li>
+            </ul>
+
+            <h3><i class="fas fa-seedling"></i> 成长建议 (Growth Tips)</h3>
+            <ul>
+                <li>给自己设定简单的储蓄与规划规则，让未来的自己也感谢现在的你。</li>
+                <li>允许自己偶尔认真面对“不开心”的部分，而不是全部转移话题。</li>
+                <li>记住：即使不逗笑别人，你本身也值得被喜欢。</li>
+            </ul>
+        `
+    }
+};
 
 
         let currentQuestionIndex = 0;
